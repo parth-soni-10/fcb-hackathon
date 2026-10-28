@@ -1,0 +1,12 @@
+# Pinned to the environment this pipeline was built and verified with (Python 3.11).
+# The competition's own scorer needs only numpy and pandas; the notebook adds plotting and the
+# headless-execution stack.
+numpy==2.4.6
+pandas==2.3.3
+matplotlib==3.11.0
+
+# Only for `jupyter nbconvert --to notebook --execute` (Colab and Jupyter provide these already).
+nbformat==5.10.4
+nbclient==0.11.0
+nbconvert==7.17.1
+jupyter_client==8.9.1

@@ -1,0 +1,144 @@
+{
+  "team": "BAU",
+  "generated_utc": "2026-10-28T10:48:02+00:00",
+  "repository": {
+    "url": "https://github.com/metrica-sports/more-than-a-hack-2027.git",
+    "path": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\more-than-a-hack-2027",
+    "commit": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
+    "source": "local"
+  },
+  "data": {
+    "root": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data",
+    "source": "MTAH_DATA_DIR",
+    "on_drive": false,
+    "files": {
+      "atd_meta": {
+        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_atd.xml",
+        "present": true,
+        "size_bytes": 59057
+      },
+      "atd_raw": {
+        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_atd.txt",
+        "present": true,
+        "size_bytes": 195714285
+      },
+      "homography": {
+        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_homography.csv",
+        "present": true,
+        "size_bytes": 23187043
+      },
+      "smart_tagging": {
+        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_smart_tagging.xml",
+        "present": true,
+        "size_bytes": 261055
+      },
+      "video": {
+        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical.mp4",
+        "present": false,
+        "size_bytes": null
+      }
+    }
+  },
+  "run": {
+    "n_frames": 199319,
+    "graded_frames": 158857,
+    "fps": 25,
+    "bootstrap_n": 1000,
+    "stress_draws": 10,
+    "config": {
+      "kappa": 0.8,
+      "clip": 4.0,
+      "r_gate": 7.0,
+      "w_tag": 0.75,
+      "w_shape": 0.6,
+      "shape_clip": 2.0,
+      "w_touch": 0.5,
+      "touch_dist": 1.5,
+      "touch_hold_s": 0.12,
+      "touch_decay_s": 5.0,
+      "lam_team": 1.5,
+      "haz_gamma": 0.25,
+      "haz_T_s": 12.0,
+      "haz_iters": 3,
+      "lam_ens": [
+        0.9,
+        1.0,
+        1.1
+      ],
+      "lam_dead": 3.0,
+      "min_dead_s": 2.0,
+      "min_alive_s": 5.0,
+      "v_static": 1.0,
+      "static_min_s": 3.0,
+      "oob_margin": 1.0,
+      "oob_min_s": 0.5,
+      "v_alive": 3.0,
+      "r_iso": 2.0,
+      "iso_min_s": 1.0,
+      "r_np": 10.0,
+      "np_win_s": 3.0,
+      "np_min_s": 1.0,
+      "v_np_lo": 1.0,
+      "v_np_hi": 8.0,
+      "kin_np": 1.0,
+      "kin_dead": 4.0,
+      "kin_alive": 3.0,
+      "w_pm": 0.5,
+      "pm_clip": 3.0,
+      "w_sp": 2.0,
+      "v_restart": 3.0,
+      "sp_fallback": 0.5,
+      "ctrl_dist": 1.5,
+      "ctrl_gap": 2.5
+    },
+    "layout": {
+      "n_slots": 46,
+      "n_player_fields": 3,
+      "n_ball_fields": 3,
+      "chunks_fast": 40,
+      "chunks_slow": 0
+    },
+    "parity": {
+      "agree": 1.0,
+      "mismatch": 0,
+      "compared_frames": 199319,
+      "baseline": "baseline_raw.csv"
+    }
+  },
+  "submission": {
+    "path": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\more-than-a-hack-2027\\evaluation\\results\\BAU.csv",
+    "drive_copy": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\submission\\BAU.csv",
+    "sha256": "dbdaebf22bec39af34df2eea94559d321886bb153d276ac58720dabfb74f99ac",
+    "rows": 199319,
+    "label_counts": {
+      "H": 58179,
+      "A": 39626,
+      "D": 61052,
+      "X": 40462
+    }
+  },
+  "public_window": {
+    "start": 11185,
+    "stop": 18685,
+    "spellF1": 0.6514285714285715,
+    "spell_lo": 0.5028571428571429,
+    "spell_hi": 0.8,
+    "macroF1": 0.8482460670899972,
+    "best_baseline": "baseline_smooth125",
+    "best_baseline_spellF1": 0.4242424242424242
+  },
+  "diagnostics": {
+    "possessions": 306,
+    "mean_s": 12.784967320261439,
+    "median_s": 8.58,
+    "D_share": 0.38432048949684305,
+    "poss_per_min": 2.9437607023979786
+  },
+  "environment": {
+    "python": "3.11.3",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "platform": "Windows-10-10.0.26220-SP0",
+    "notebook_sha256": "e0f2413ac073680dff1e9715ba126dae4b879cbaa8849f9cf030a3b781d8b2f8"
+  }
+}

@@ -1,0 +1,19 @@
+# The match data is licensed for the competition only and must not be redistributed.
+# Unpack the bundle into data/ (DATA.md) and it stays out of git.
+data/
+
+# Generated labels and per-run outputs: a correct submission is a copy of the ground truth.
+evaluation/results/*.csv
+evaluation/reports/
+evaluation/scoreboard.csv
+*.csv
+executed.ipynb
+
+# Editors and caches
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Agent scratch: executed notebooks, logs, generated reports.
+_work/
