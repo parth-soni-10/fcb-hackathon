@@ -1,39 +1,39 @@
 {
   "team": "BAU",
-  "generated_utc": "2026-11-01T14:32:34+00:00",
+  "generated_utc": "2026-11-01T23:13:08+00:00",
   "repository": {
     "url": "https://github.com/metrica-sports/more-than-a-hack-2027.git",
-    "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\more-than-a-hack-2027",
+    "path": "more-than-a-hack-2027",
     "commit": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
     "source": "local"
   },
   "data": {
-    "root": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data",
+    "root": "data",
     "source": "MTAH_DATA_DIR",
     "on_drive": false,
     "files": {
       "atd_meta": {
-        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_atd.xml",
+        "path": "tactical/BAR-ATH_tactical_atd.xml",
         "present": true,
         "size_bytes": 59057
       },
       "atd_raw": {
-        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_atd.txt",
+        "path": "tactical/BAR-ATH_tactical_atd.txt",
         "present": true,
         "size_bytes": 195714285
       },
       "homography": {
-        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_homography.csv",
+        "path": "tactical/BAR-ATH_tactical_homography.csv",
         "present": true,
         "size_bytes": 23187043
       },
       "smart_tagging": {
-        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical_smart_tagging.xml",
+        "path": "tactical/BAR-ATH_tactical_smart_tagging.xml",
         "present": true,
         "size_bytes": 261055
       },
       "video": {
-        "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\data\\tactical\\BAR-ATH_tactical.mp4",
+        "path": "tactical/BAR-ATH_tactical.mp4",
         "present": false,
         "size_bytes": null
       }
@@ -106,8 +106,8 @@
     }
   },
   "submission": {
-    "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\more-than-a-hack-2027\\evaluation\\results\\BAU.csv",
-    "drive_copy": "C:\\Users\\Parth\\AppData\\Local\\Temp\\repo_verify_work\\work\\submission\\BAU.csv",
+    "path": "evaluation/results/BAU.csv",
+    "drive_copy": "BAU.csv",
     "sha256": "dbdaebf22bec39af34df2eea94559d321886bb153d276ac58720dabfb74f99ac",
     "rows": 199319,
     "label_counts": {
@@ -139,6 +139,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "b490114e5a965a6ec8f62ea1f222cae79950b1ef058624432dc8ecfe8e63d41b"
+    "notebook_sha256": "77b22b7dbb7bc5b977b68f5b8aa0ebb0e18d22d90ed1dc41fdaeda4cee486bf3"
   }
 }
