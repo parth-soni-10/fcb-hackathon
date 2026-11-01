@@ -1,9 +1,9 @@
 {
   "team": "BAU",
-  "generated_utc": "2026-10-28T10:48:02+00:00",
+  "generated_utc": "2026-11-01T14:32:34+00:00",
   "repository": {
     "url": "https://github.com/metrica-sports/more-than-a-hack-2027.git",
-    "path": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\more-than-a-hack-2027",
+    "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\more-than-a-hack-2027",
     "commit": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
     "source": "local"
   },
@@ -106,8 +106,8 @@
     }
   },
   "submission": {
-    "path": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\more-than-a-hack-2027\\evaluation\\results\\BAU.csv",
-    "drive_copy": "C:\\Users\\Parth\\AppData\\Local\\Temp\\mtah_full\\work\\submission\\BAU.csv",
+    "path": "C:\\Users\\Parth\\Desktop\\Github\\FCB Hackathon\\more-than-a-hack-2027\\evaluation\\results\\BAU.csv",
+    "drive_copy": "C:\\Users\\Parth\\AppData\\Local\\Temp\\repo_verify_work\\work\\submission\\BAU.csv",
     "sha256": "dbdaebf22bec39af34df2eea94559d321886bb153d276ac58720dabfb74f99ac",
     "rows": 199319,
     "label_counts": {
@@ -139,6 +139,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "e0f2413ac073680dff1e9715ba126dae4b879cbaa8849f9cf030a3b781d8b2f8"
+    "notebook_sha256": "b490114e5a965a6ec8f62ea1f222cae79950b1ef058624432dc8ecfe8e63d41b"
   }
 }
