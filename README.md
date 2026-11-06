@@ -38,7 +38,7 @@ repository's `evaluation/results/` so the official scorer can read it.
    library, the scorer, the public ground truth and the four baselines. The notebook finds a local
    clone, a clone already in the work folder, or clones it itself.
 
-Nothing else is needed to rerun the pipeline. The tactical video is not decoded. Two external Metrica sample games were used once, as other-game human data, to fix `lam_team=2.0` and the 8 m/s relative-speed touch gate; those files are not required for reproduction and are not redistributed here. They do not account for `w_tag=0.75`, which is disclosed as public-window-selected history.
+Nothing else is needed to rerun the pipeline. The tactical video is not decoded. Two external Metrica sample games were used once, as other-game human data, to fix `lam_team=2.0`, the 8 m/s relative-speed touch gate, `touch_dist=1.25 m`, `kappa=1.0` and `r_gate=5.0`; those files are not required for reproduction and are not redistributed here. The earlier package used the public window to select constants, but every one of those values is reverted or replaced in this package; no public-window-selected constant remains.
 
 ---
 
@@ -85,12 +85,13 @@ Drive, and runs without one if `MTAH_DATA_DIR` and `MTAH_WORK_DIR` are set.
 
 The labels are deterministic: fixed seeds, no random initialisation, no training on the public
 labels, and the CSV is written with `\n` line endings so a Windows run and a Linux run produce the
-same bytes. The final values are the pre-registered baseline plus `lam_team=2.0` and the 8 m/s
-relative-speed touch gate fixed on the two external Metrica sample games. The age hazard is disabled
-because the external games did not support it. One retained constant, `w_tag=0.75`, was selected on
-the public window in the earlier package; the selection history is recorded in the technical
-document and `manifest.json`. `manifest.json` also records the team repository, the competition-code
-commit, the bundle's file sizes, the config and the sha256 of the submitted CSV.
+same bytes. The final values are the pre-registered baseline plus `lam_team=2.0`, the 8 m/s
+relative-speed touch gate, `touch_dist=1.25 m`, `kappa=1.0` and `r_gate=5.0` fixed on the two external
+Metrica sample games. The age hazard is disabled because the external games did not support it. The
+earlier package selected constants on the public window; every one of those values is reverted or
+replaced here, and no public-window-selected constant remains. The selection history is recorded in
+the technical document and `manifest.json`. `manifest.json` also records the team repository, the
+competition-code commit, the bundle's file sizes, the config and the sha256 of the submitted CSV.
 
 `MTAH_STRICT_PARITY=1` (the default) makes the run stop unless the parsed tracking, team mapping
 and frame alignment reproduce the repository's own committed `baseline_raw.csv`, frame for frame.
@@ -108,13 +109,13 @@ explicit about how little the five-minute window can decide.
 - **The labels come out of an algorithm**  a probabilistic decoder over ball geometry, Smart
   Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected.
 - **The private ground truth is not used.** The final values are the pre-registered baseline plus
-  two settings fixed on two external Metrica sample games (other games). The published five minutes
-  were also used to select constants in the earlier package; the final package reverts most of them
-  but retains `w_tag=0.75`. The public window is therefore not a clean post-hoc check, and RULES.md #7
-  is not fully satisfied. Details are in the technical document and `manifest.json`.
+  five settings fixed on two external Metrica sample games (other games). The published five minutes
+  were also used to select constants in the earlier package; every one of those values is reverted
+  or replaced in this package, so no public-window-selected constant remains and RULES.md #7 is
+  satisfied. Details are in the technical document and `manifest.json`.
 - **Zero hand labels from the provided game.** No frame was hand-labelled or hand-corrected, and no
-  human labeller was used. The two external sample games contribute only the two fixed constants;
-  they are not training data and are not redistributed.
+  human labeller was used. The two external sample games contribute only the external-game geometry
+  and touch settings; they are not training data and are not redistributed.
 - **No video is decoded.** The tactical video is not decoded or used; the match inputs are the
   bundle's ATD, Smart Tagging and homography.
 - **The match data is not redistributed.** It stays in Drive and is never copied into this
