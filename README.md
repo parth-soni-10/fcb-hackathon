@@ -38,7 +38,7 @@ repository's `evaluation/results/` so the official scorer can read it.
    library, the scorer, the public ground truth and the four baselines. The notebook finds a local
    clone, a clone already in the work folder, or clones it itself.
 
-Nothing else. There is no model download and no external data.
+Nothing else is needed to rerun the pipeline. The tactical video is not decoded. Two external Metrica sample games were used once, as other-game human data, to fix `lam_team=2.0` and the 8 m/s relative-speed touch gate; those files are not required for reproduction and are not redistributed here.
 
 ---
 
@@ -83,10 +83,13 @@ Drive, and runs without one if `MTAH_DATA_DIR` and `MTAH_WORK_DIR` are set.
 
 ## Reproducibility
 
-The labels are deterministic: fixed seeds, no random initialisation, no training on the public
-labels, and the CSV is written with `\n` line endings so a Windows run and a Linux run produce the
-same bytes. `manifest.json` records the repository commit, the bundle's file sizes, the config and
-the sha256 of the submitted CSV.
+The labels are deterministic: fixed seeds, no random initialisation, no training or tuning on the
+public labels, and the CSV is written with `\n` line endings so a Windows run and a Linux run
+produce the same bytes. The constants are the pre-registered baseline plus exactly two settings fixed
+on the two external Metrica sample games: `lam_team=2.0` and the 8 m/s relative-speed touch gate. The
+age hazard is disabled because the external games did not support it. `manifest.json` records the
+team repository, the competition-code commit, the bundle's file sizes, the config and the sha256 of
+the submitted CSV.
 
 `MTAH_STRICT_PARITY=1` (the default) makes the run stop unless the parsed tracking, team mapping
 and frame alignment reproduce the repository's own committed `baseline_raw.csv`, frame for frame.
@@ -103,8 +106,15 @@ explicit about how little the five-minute window can decide.
 
 - **The labels come out of an algorithm**  a probabilistic decoder over ball geometry, Smart
   Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected.
-- **The private ground truth is not used.** Only the published five minutes, and only for
-  evaluation  never for fitting or tuning.
+- **The private ground truth is not used.** The decoder's constants are the pre-registered
+  baseline plus two settings fixed on two external Metrica sample games (other games). The published
+  five minutes are used only for post-hoc verification and the final score, never to fit a model or
+  choose a setting.
+- **Zero hand labels from the provided game.** No frame was hand-labelled or hand-corrected, and no
+  human labeller was used. The two external sample games contribute only the two fixed constants;
+  they are not training data and are not redistributed.
+- **No video is decoded.** The tactical video is not decoded or used; the match inputs are the
+  bundle's ATD, Smart Tagging and homography.
 - **The match data is not redistributed.** It stays in Drive and is never copied into this
   repository or into the deliverables folder; the run's checklist asserts that none of the bundle
   is tracked by git.
