@@ -38,7 +38,7 @@ repository's `evaluation/results/` so the official scorer can read it.
    library, the scorer, the public ground truth and the four baselines. The notebook finds a local
    clone, a clone already in the work folder, or clones it itself.
 
-Nothing else is needed to rerun the pipeline. The tactical video is not decoded. Two external Metrica sample games were used once, as other-game human data, to fix `lam_team=2.0`, the 8 m/s relative-speed touch gate, `touch_dist=1.25 m`, `kappa=1.0` and `r_gate=5.0`; those files are not required for reproduction and are not redistributed here. The earlier package used the public window to select constants, but every one of those values is reverted or replaced in this package; no public-window-selected constant remains. The long-gap open-play guard (`gap_tag_after_s=20.0`, `w_tag_alive=1.0`) is a label-free structural prior fixed from the match-wide gap distribution and tag semantics; the public window has no ball gap longer than 14.6 s, so the guard cannot fire there. A dead-bounded short-spell cleanup then applies the existing 5 s alive floor to isolated team runs; it adds no new constant.
+Nothing else is needed to rerun the pipeline. The tactical video is not decoded. Two external Metrica sample games were used once, as other-game human data, to fix `lam_team=2.0`, the 8 m/s relative-speed touch gate, `touch_dist=1.25 m`, `kappa=1.0` and `r_gate=5.0`; those files are not required for reproduction and are not redistributed here. The earlier package used the public window to select constants, but every one of those values is reverted or replaced in this package; no public-window-selected constant remains. The long-gap open-play guard (`gap_tag_after_s=20.0`, `w_tag_alive=1.0`) is a label-free structural prior fixed from the match-wide gap distribution and tag semantics; the public window has no ball gap longer than 14.6 s, so the guard cannot fire there. A dead-leading short-spell cleanup then applies the existing 5 s alive floor to short team runs immediately after dead ball; it was checked on the two external Metrica games and adds no new constant.
 
 ---
 
@@ -87,7 +87,7 @@ The labels are deterministic: fixed seeds, no random initialisation, no training
 labels, and the CSV is written with `\n` line endings so a Windows run and a Linux run produce the
 same bytes. The final values are the pre-registered baseline plus `lam_team=2.0`, the 8 m/s
 relative-speed touch gate, `touch_dist=1.25 m`, `kappa=1.0` and `r_gate=5.0` fixed on the two external
-Metrica sample games. The label-free long-gap open-play prior (`gap_tag_after_s=20.0`, `w_tag_alive=1.0`) is fixed from the match-wide gap structure and the tag scale, not from the public window. The dead-bounded short-spell cleanup reuses the pre-registered `min_alive_s=5.0` floor. The age hazard is disabled because the external games did not support it. The
+Metrica sample games. The label-free long-gap open-play prior (`gap_tag_after_s=20.0`, `w_tag_alive=1.0`) is fixed from the match-wide gap structure and the tag scale, not from the public window. The dead-leading short-spell cleanup reuses the pre-registered `min_alive_s=5.0` floor and was checked on the two external games. The age hazard is disabled because the external games did not support it. The
 earlier package selected constants on the public window; every one of those values is reverted or
 replaced here, and no public-window-selected constant remains. The selection history is recorded in
 the technical document and `manifest.json`. `manifest.json` also records the team repository, the
@@ -109,7 +109,7 @@ explicit about how little the five-minute window can decide.
 - **The labels come out of an algorithm**  a probabilistic decoder over ball geometry, Smart
   Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected.
 - **The private ground truth is not used.** The final values are the pre-registered baseline plus
-  five settings fixed on two external Metrica sample games (other games). A label-free long-gap open-play prior is fixed from the match-wide gap structure; it is inactive on the public window. The separate dead-bounded short-spell cleanup reuses the existing 5 s alive floor and removes one public possession. The published five minutes
+  five settings fixed on two external Metrica sample games (other games). A label-free long-gap open-play prior is fixed from the match-wide gap structure; it is inactive on the public window. The separate dead-leading short-spell cleanup reuses the existing 5 s alive floor and removes two public short runs. The published five minutes
   were also used to select constants in the earlier package; every one of those values is reverted
   or replaced in this package, so no public-window-selected constant remains and RULES.md #7 is
   satisfied. Details are in the technical document and `manifest.json`.
