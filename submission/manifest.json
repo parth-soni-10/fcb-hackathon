@@ -1,17 +1,17 @@
 {
   "team": "BAU",
   "compliance": {
-    "ground_truth": "public five minutes read only after the CSV was fixed, for post-hoc checks and the final score; no setting selected from it",
+    "ground_truth": "public five minutes read for descriptive analysis, pseudo-label quality checks, post-hoc checks and the final score; never an input to the decoder and no setting selected from it",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used only to fix lam_team=2.0 and touch_rel_max=8.0 m/s; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T14:27:58+00:00",
+  "generated_utc": "2026-11-06T14:32:18+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "f92deaf045bc6bdb351e65f430c06a627e5df83c",
+    "commit": "f62b5784d16072d86c40f4a6b5a3392c6b8db6c3",
     "source": "git"
   },
   "competition_repo": {
@@ -148,6 +148,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "8bcd578f09a684eebc613378f3852a694376c05bf27a59df2035400a79c3f810"
+    "notebook_sha256": "f56084beb25af81298a2c0f400d9779b09193c8afb1cf88877323542eb38908e"
   }
 }
