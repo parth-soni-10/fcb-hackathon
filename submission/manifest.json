@@ -8,11 +8,11 @@
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T21:04:50+00:00",
+  "generated_utc": "2026-11-06T21:41:03+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "72463c04e70b05d1eac771842a0205a428acd1ac",
+    "commit": "9171c5fb8667d59ed707e24cf4d0249505e07af5",
     "source": "git"
   },
   "competition_repo": {
@@ -120,12 +120,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "1a9022720540f4dd81cbbb6e5908a68229c1f85c26ac8d7fdef5d0b6c5bcd4a5",
+    "sha256": "64af7d28544b5d5a6dff826a3b921ec760bf31022fa7a1a07ed0f6f8dc79d6a3",
     "rows": 199319,
     "label_counts": {
-      "H": 57002,
-      "A": 44693,
-      "D": 57162,
+      "H": 56162,
+      "A": 43552,
+      "D": 59143,
       "X": 40462
     }
   },
@@ -133,10 +133,10 @@
     "start": 11185,
     "stop": 18685,
     "used_for_selection": false,
-    "spellF1": 0.6451612903225806,
-    "spell_lo": 0.45354838709677414,
-    "spell_hi": 0.8379233870967742,
-    "macroF1": 0.8409538051667772,
+    "spellF1": 0.6666666666666667,
+    "spell_lo": 0.4686666666666666,
+    "spell_hi": 0.8425685483870967,
+    "macroF1": 0.8368141753034352,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
@@ -161,10 +161,10 @@
     },
     "final_package": {
       "public_window": {
-        "spellF1": 0.6451612903225806,
-        "macroF1": 0.8409538051667772
+        "spellF1": 0.6666666666666667,
+        "macroF1": 0.8368141753034352
       },
-      "submission_sha256": "1a9022720540f4dd81cbbb6e5908a68229c1f85c26ac8d7fdef5d0b6c5bcd4a5",
+      "submission_sha256": "64af7d28544b5d5a6dff826a3b921ec760bf31022fa7a1a07ed0f6f8dc79d6a3",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -188,28 +188,31 @@
         "source": "match-wide gap distribution and tag semantics; not public"
       },
       "label_free_postprocess": {
-        "name": "dead_leading_restart_lead_and_other_touch_split",
+        "name": "dead_leading_restart_lead_self_touch_and_other_touch_split",
         "min_s": 5.0,
-        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trim uses ball visibility; external last-touch check was inert for the split; no public selection",
-        "dropped": 18,
-        "changed": 15148,
-        "public_dropped": 2
+        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trims use ball visibility and self-touch support; the post-trim short-spell cleanup is a structural closure; external last-touch check was inert for the split; no public selection",
+        "dropped": 31,
+        "changed": 17129,
+        "public_dropped": 3,
+        "support_trimmed": 896,
+        "public_support_trimmed": 20,
+        "post_trim_dropped": 13
       }
     },
     "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 248,
-    "mean_s": 16.40241935483871,
-    "median_s": 12.04,
-    "D_share": 0.3598330574038286,
-    "poss_per_min": 2.3857929875643746
+    "possessions": 235,
+    "mean_s": 16.97259574468085,
+    "median_s": 12.16,
+    "D_share": 0.37230339235916576,
+    "poss_per_min": 2.2607312583775325
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "250fa67452fdf1531edfa09b51fe90a58a7eb509292d4578343cbec8598e116d"
+    "notebook_sha256": "3ba1f29726aaea41581ad67a37cb203aa75180ccd888e88893876c5182e01e57"
   }
 }
