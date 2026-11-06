@@ -1,7 +1,20 @@
 {
   "team": "BAU",
-  "generated_utc": "2026-11-01T23:13:08+00:00",
+  "compliance": {
+    "ground_truth": "public five minutes read only after the CSV was fixed, for post-hoc checks and the final score; no setting selected from it",
+    "private_ground_truth": "not present, not read",
+    "video": "not decoded",
+    "training_labels": "0 hand-labelled frames; 0 labellers",
+    "external_data": "two Metrica sample games used only to fix lam_team=2.0 and touch_rel_max=8.0 m/s; not training data; not redistributed"
+  },
+  "generated_utc": "2026-11-06T14:27:58+00:00",
   "repository": {
+    "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
+    "path": ".",
+    "commit": "eb9c32ab627c5fba6f713faedf83b9280489b02d",
+    "source": "git"
+  },
+  "competition_repo": {
     "url": "https://github.com/metrica-sports/more-than-a-hack-2027.git",
     "path": "more-than-a-hack-2027",
     "commit": "f8f2629ff1e0985f81d7e59d8413678514ee1530",
@@ -56,15 +69,11 @@
       "touch_dist": 1.5,
       "touch_hold_s": 0.12,
       "touch_decay_s": 5.0,
-      "lam_team": 1.5,
-      "haz_gamma": 0.25,
+      "touch_rel_max": 8.0,
+      "lam_team": 2.0,
+      "haz_gamma": 0.0,
       "haz_T_s": 12.0,
       "haz_iters": 3,
-      "lam_ens": [
-        0.9,
-        1.0,
-        1.1
-      ],
       "lam_dead": 3.0,
       "min_dead_s": 2.0,
       "min_alive_s": 5.0,
@@ -73,14 +82,14 @@
       "oob_margin": 1.0,
       "oob_min_s": 0.5,
       "v_alive": 3.0,
-      "r_iso": 2.0,
+      "r_iso": 3.0,
       "iso_min_s": 1.0,
       "r_np": 10.0,
       "np_win_s": 3.0,
       "np_min_s": 1.0,
       "v_np_lo": 1.0,
       "v_np_hi": 8.0,
-      "kin_np": 1.0,
+      "kin_np": 0.0,
       "kin_dead": 4.0,
       "kin_alive": 3.0,
       "w_pm": 0.5,
@@ -108,37 +117,37 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "dbdaebf22bec39af34df2eea94559d321886bb153d276ac58720dabfb74f99ac",
+    "sha256": "6e22d8572d2eb165e7944d5256d0df0cec37c4d6f94319b570b27b5c911a256f",
     "rows": 199319,
     "label_counts": {
-      "H": 58179,
-      "A": 39626,
-      "D": 61052,
+      "H": 60938,
+      "A": 40873,
+      "D": 57046,
       "X": 40462
     }
   },
   "public_window": {
     "start": 11185,
     "stop": 18685,
-    "spellF1": 0.6514285714285715,
-    "spell_lo": 0.5028571428571429,
-    "spell_hi": 0.8,
-    "macroF1": 0.8482460670899972,
+    "spellF1": 0.575,
+    "spell_lo": 0.3875,
+    "spell_hi": 0.75,
+    "macroF1": 0.8012910163190288,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
   "diagnostics": {
-    "possessions": 306,
-    "mean_s": 12.784967320261439,
-    "median_s": 8.58,
-    "D_share": 0.38432048949684305,
-    "poss_per_min": 2.9437607023979786
+    "possessions": 257,
+    "mean_s": 15.846070038910508,
+    "median_s": 10.44,
+    "D_share": 0.359102840919821,
+    "poss_per_min": 2.472374184693727
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "77b22b7dbb7bc5b977b68f5b8aa0ebb0e18d22d90ed1dc41fdaeda4cee486bf3"
+    "notebook_sha256": "8bcd578f09a684eebc613378f3852a694376c05bf27a59df2035400a79c3f810"
   }
 }
