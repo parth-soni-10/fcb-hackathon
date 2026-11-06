@@ -8,11 +8,11 @@
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T20:45:45+00:00",
+  "generated_utc": "2026-11-06T20:58:48+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "e2d93c510be02f7562d2dfa9559eec3232eeb7d3",
+    "commit": "93f4c6eb6916f80ec47e94e3d7db4fb8836bd61a",
     "source": "git"
   },
   "competition_repo": {
@@ -120,12 +120,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "d848fa32c46a6852c7b4632561439a2a0c671b748c2c28e972cd640b0cadec8b",
+    "sha256": "0e93072a617326fec6649a1912e8ff0638c7ec5d0ca5e5cec5099d55489d3021",
     "rows": 199319,
     "label_counts": {
-      "H": 63054,
-      "A": 41195,
-      "D": 54608,
+      "H": 61609,
+      "A": 40086,
+      "D": 57162,
       "X": 40462
     }
   },
@@ -164,7 +164,7 @@
         "spellF1": 0.6133333333333334,
         "macroF1": 0.833160243236751
       },
-      "submission_sha256": "d848fa32c46a6852c7b4632561439a2a0c671b748c2c28e972cd640b0cadec8b",
+      "submission_sha256": "0e93072a617326fec6649a1912e8ff0638c7ec5d0ca5e5cec5099d55489d3021",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -188,11 +188,11 @@
         "source": "match-wide gap distribution and tag semantics; not public"
       },
       "label_free_postprocess": {
-        "name": "dead_leading_short_spell_cleanup",
+        "name": "dead_leading_plus_restart_lead_cleanup",
         "min_s": 5.0,
-        "source": "reuses the pre-registered min_alive_s floor; checked on two external Metrica games; no public selection",
+        "source": "dead-leading reuses min_alive_s; restart lead trim uses ball visibility; checked on two external Metrica games; no public selection",
         "dropped": 18,
-        "changed": 1315,
+        "changed": 3869,
         "public_dropped": 2
       }
     },
@@ -200,9 +200,9 @@
   },
   "diagnostics": {
     "possessions": 254,
-    "mean_s": 16.41716535433071,
-    "median_s": 12.04,
-    "D_share": 0.3437557048162813,
+    "mean_s": 16.01496062992126,
+    "median_s": 11.780000000000001,
+    "D_share": 0.3598330574038286,
     "poss_per_min": 2.4435137856506097
   },
   "environment": {
@@ -210,6 +210,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "f1604a1d1605537ececc365ac4dc797dcba57132f43903ee631e357b4d6dc4bc"
+    "notebook_sha256": "7b4b3d497ed809a300334494415cd8bd29a45261bb503a3aa363a9cbc1b13b06"
   }
 }
