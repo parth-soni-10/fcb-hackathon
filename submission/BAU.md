@@ -66,9 +66,11 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 
 * **Long-gap open-play guard.** After 20 s without a visible ball, a confident open-play tag (|weighted tag evidence| >= 0.5; set pieces/goals excluded) contributes a fixed 1.0 nat alive prior. It is a soft prior: the player-only model still wins when it is strongly dead. On the full match it is active on 4462 graded frames; the open-play-tag contradiction count falls from 3953 to 1080 and 3753 labels change. 0 public frames are affected because the public window has no ball gap that long.
 
-* **Dead-leading short-spell cleanup.** A short team run shorter than the existing 5.0 s alive floor, immediately after decoded dead ball and followed by another team run, is an isolated restart blip and is relabelled dead; the earlier short alive-island cleanup remains. The combined post-pass is label-free, reuses the pre-registered floor and adds no public-selected constant. The rule is part of the combined post-pass checked below; it removes 18 short run(s) and 1315 frame(s) on the full match, including 2 in the public window.
+* **Dead-leading short-spell cleanup.** A short team run shorter than the existing 5.0 s alive floor, immediately after decoded dead ball and followed by another team run, is an isolated restart blip and is relabelled dead; the earlier short alive-island cleanup remains. The combined post-pass is label-free, reuses the pre-registered floor and adds no public-selected constant. The initial pass and the post-trim closure remove 31 short run(s) and 2400 frame(s) on the full match, including 3 in the public window.
 
-* **Restart lead-in trim.** After dead ball, a possession's leading frames are held dead until the tracking ball is visible again; this follows the event definition of recovery and adds no new threshold. It was checked with the shipped dead-leading cleanup on the two external games: spellF1 rose from 0.2945 to 0.2974 and from 0.3264 to 0.3293; macroF1 rose from 0.3130 to 0.3714 and from 0.3674 to 0.4051. It trims 2554 frame(s) on the full match, 0 in the public window, so the public score is unchanged.
+* **Restart lead-in trim.** After dead ball, a possession's leading frames are held dead until the tracking ball is visible again; this follows the event definition of recovery and adds no new threshold. It was checked with the shipped dead-leading cleanup on the two external games: spellF1 rose from 0.2945 to 0.2974 and from 0.3264 to 0.3293; macroF1 rose from 0.3130 to 0.3714 and from 0.3674 to 0.4051. It trims 2554 frame(s) on the full match, 0 in the public window.
+
+* **Restart self-touch trim and post-trim cleanup.** A post-dead lead-in must also contain a controlled touch by the team that is given possession; leading frames before that first self-support are held dead, using the same last-touch state and no new threshold. If the trim makes an after-dead team run shorter than the existing 5.0 s alive floor, the same dead-leading cleanup is applied again, so the pass is closed under that floor. It trims 896 frame(s) on the full match, 20 in the public window; the cleanup then removes 13 short run(s) and 1085 frame(s) on the full match, including 1 in the public window. This is a structural closure, not a public-window selection.
 
 * **Sustained other-touch split.** Within an alive team run, a contiguous block where the other team has last-touch support for at least the existing 5.0 s alive floor is treated as that other team's possession. It reuses the pre-registered floor, adds no threshold, and is a structural implementation of the controlled-touch rule; it was inert on the last-touch baseline of both external games, so it is not an external empirical selection, and no public-window setting is used. It changes 11279 frame(s) on the full match, 147 in the public window. The public score is post-hoc.
 
@@ -116,7 +118,7 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 | submission | spellF1 | macroF1 | poss | dur_s |
 |---|---|---|---|---|
-| BAU_full | 0.645 | 0.841 | 14 | 18.103 |
+| BAU_full | 0.667 | 0.837 | 13 | 19.080 |
 | baseline_smooth125 | 0.424 | 0.581 | 16 | 18.460 |
 | baseline_smooth50 | 0.326 | 0.621 | 26 | 10.803 |
 | baseline_smooth25 | 0.287 | 0.620 | 36 | 7.580 |
@@ -124,13 +126,13 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 Only the submitted file and the shipped baselines are shown. The earlier package was ranked on this window; all of its public-selected values are reverted, so this score is a post-hoc check, not a selection result.
 
-Full-match diagnostics of the submitted labels (no ground truth involved): 248 possessions, mean 16.4 s, median 12.0 s, dead-ball share 36.0%, 2.39 possessions per play minute.
+Full-match diagnostics of the submitted labels (no ground truth involved): 235 possessions, mean 17.0 s, median 12.2 s, dead-ball share 37.2%, 2.26 possessions per play minute.
 
-On that window the submitted labels score spellF1 **0.645** [0.454, 0.838] and macroF1 **0.841**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
+On that window the submitted labels score spellF1 **0.667** [0.469, 0.843] and macroF1 **0.837**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
 
 ## 6. Limitations
 
-* **Public-window history is disclosed, not reused.** Every earlier public-selected value is reverted or replaced; the final config contains no public-window-selected constant, so RULES.md #7 is satisfied. The 0.645 score is a post-hoc five-minute estimate, not a full-match forecast.
+* **Public-window history is disclosed, not reused.** Every earlier public-selected value is reverted or replaced; the final config contains no public-window-selected constant, so RULES.md #7 is satisfied. The 0.667 score is a post-hoc five-minute estimate, not a full-match forecast.
 
 * Long ball-less gaps dominate the error budget. 41% of graded frames have no ball, and 67% of those missing frames sit in gaps longer than 20 s, where the player-only models and the long-gap tag guard are doing the work on weak evidence.
 
@@ -165,4 +167,4 @@ MTAH_TEAM=BAU MTAH_DATA_DIR='<bundle>' MTAH_WORK_DIR='<out>' \
 
 The match data and the external sample data are not redistributed with this document or the repository.
 
-Generated by the run that wrote `BAU.csv` (sha256 `1a9022720540f4dd81cbbb6e5908a68229c1f85c26ac8d7fdef5d0b6c5bcd4a5`), so a stale copy of this document is detectable.
+Generated by the run that wrote `BAU.csv` (sha256 `64af7d28544b5d5a6dff826a3b921ec760bf31022fa7a1a07ed0f6f8dc79d6a3`), so a stale copy of this document is detectable.
