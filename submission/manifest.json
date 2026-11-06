@@ -1,18 +1,18 @@
 {
   "team": "BAU",
   "compliance": {
-    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; an earlier package selected settings from it, but every selected value is reverted or replaced here, so no final setting is selected from the public window; rule 7 is satisfied",
-    "rule_7": "satisfied: no public-window-selected constant remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are external-game choices, the long-gap tag prior is label-free, and the rebound rule is removed",
+    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; an earlier package selected settings from it and a later public-selected dead-model candidate was removed, so no final setting or post-processing pass is selected from the public window",
+    "public_selection": "satisfied: no public-window-selected constant or post-processing pass remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are external-game choices, the long-gap tag prior is label-free, the rebound rule is removed, and the public-selected dead-model candidate is removed",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T21:52:34+00:00",
+  "generated_utc": "2026-11-06T22:40:40+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "7386f3abfdda870cbe1576ec6a920758aff3be74",
+    "commit": "f0954e6a19d57d17aafbbb806ef0ad3f5c9a1fda",
     "source": "git"
   },
   "competition_repo": {
@@ -120,12 +120,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "040e9b3456a035e29c93597dfc67387bb5bac6de8977f6430897e4ef6fc3376e",
+    "sha256": "64af7d28544b5d5a6dff826a3b921ec760bf31022fa7a1a07ed0f6f8dc79d6a3",
     "rows": 199319,
     "label_counts": {
-      "H": 54987,
-      "A": 39401,
-      "D": 64469,
+      "H": 56162,
+      "A": 43552,
+      "D": 59143,
       "X": 40462
     }
   },
@@ -136,12 +136,12 @@
     "spellF1": 0.6666666666666667,
     "spell_lo": 0.4686666666666666,
     "spell_hi": 0.8425685483870967,
-    "macroF1": 0.8527140958281366,
+    "macroF1": 0.8368141753034352,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
   "selection_history": {
-    "status": "fully_compliant_public_selection_reverted",
+    "status": "public_selection_removed",
     "earlier_package": {
       "commit": "eb9c32a",
       "public_window": {
@@ -162,9 +162,9 @@
     "final_package": {
       "public_window": {
         "spellF1": 0.6666666666666667,
-        "macroF1": 0.8527140958281366
+        "macroF1": 0.8368141753034352
       },
-      "submission_sha256": "040e9b3456a035e29c93597dfc67387bb5bac6de8977f6430897e4ef6fc3376e",
+      "submission_sha256": "64af7d28544b5d5a6dff826a3b921ec760bf31022fa7a1a07ed0f6f8dc79d6a3",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -180,7 +180,8 @@
       },
       "retained_public_selected": {},
       "removed": [
-        "rebound/shot rule"
+        "rebound/shot rule",
+        "sustained player-only dead-model split (public-selected candidate)"
       ],
       "label_free_gap_prior": {
         "gap_tag_after_s": 20.0,
@@ -188,34 +189,31 @@
         "source": "match-wide gap distribution and tag semantics; not public"
       },
       "label_free_postprocess": {
-        "name": "dead_leading_restart_lead_self_touch_dead_model_and_other_touch_split",
+        "name": "dead_leading_restart_lead_self_touch_and_other_touch_split",
         "min_s": 5.0,
-        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trims use ball visibility and self-touch support; the post-trim short-spell cleanup is a structural closure; the sustained player-only dead-model split uses its 0.5 boundary and min_dead_s; external last-touch check was inert for the split; no public selection",
-        "dropped": 33,
-        "changed": 19576,
+        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trims use ball visibility and self-touch support; the post-trim short-spell cleanup is a structural closure; external last-touch check was inert for the split; no public selection",
+        "dropped": 31,
+        "changed": 17129,
         "public_dropped": 3,
         "support_trimmed": 896,
         "public_support_trimmed": 20,
-        "post_trim_dropped": 13,
-        "dead_model_split": 5102,
-        "public_dead_model_split": 92,
-        "post_dead_model_dropped": 2
+        "post_trim_dropped": 13
       }
     },
-    "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
+    "note": "All public-window-selected values from the earlier package are reverted or replaced; the public-selected dead-model candidate is removed; no retained value or post-processing pass remains. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 248,
-    "mean_s": 15.223870967741934,
-    "median_s": 11.24,
-    "D_share": 0.40583040092661954,
-    "poss_per_min": 2.3857929875643746
+    "possessions": 235,
+    "mean_s": 16.97259574468085,
+    "median_s": 12.16,
+    "D_share": 0.37230339235916576,
+    "poss_per_min": 2.2607312583775325
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "cbd6e22679ca7227391640aeba8de0235ecce7c77d95773b915098661b2b96d0"
+    "notebook_sha256": "b00fc2022239b583f31466b41690804d1deb749aab64ba2dbbd326c308148ad9"
   }
 }
