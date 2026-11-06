@@ -8,11 +8,11 @@
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T20:58:48+00:00",
+  "generated_utc": "2026-11-06T21:04:50+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "93f4c6eb6916f80ec47e94e3d7db4fb8836bd61a",
+    "commit": "72463c04e70b05d1eac771842a0205a428acd1ac",
     "source": "git"
   },
   "competition_repo": {
@@ -120,11 +120,11 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "0e93072a617326fec6649a1912e8ff0638c7ec5d0ca5e5cec5099d55489d3021",
+    "sha256": "1a9022720540f4dd81cbbb6e5908a68229c1f85c26ac8d7fdef5d0b6c5bcd4a5",
     "rows": 199319,
     "label_counts": {
-      "H": 61609,
-      "A": 40086,
+      "H": 57002,
+      "A": 44693,
       "D": 57162,
       "X": 40462
     }
@@ -133,10 +133,10 @@
     "start": 11185,
     "stop": 18685,
     "used_for_selection": false,
-    "spellF1": 0.6133333333333334,
-    "spell_lo": 0.42866666666666664,
-    "spell_hi": 0.7928817204301075,
-    "macroF1": 0.833160243236751,
+    "spellF1": 0.6451612903225806,
+    "spell_lo": 0.45354838709677414,
+    "spell_hi": 0.8379233870967742,
+    "macroF1": 0.8409538051667772,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
@@ -161,10 +161,10 @@
     },
     "final_package": {
       "public_window": {
-        "spellF1": 0.6133333333333334,
-        "macroF1": 0.833160243236751
+        "spellF1": 0.6451612903225806,
+        "macroF1": 0.8409538051667772
       },
-      "submission_sha256": "0e93072a617326fec6649a1912e8ff0638c7ec5d0ca5e5cec5099d55489d3021",
+      "submission_sha256": "1a9022720540f4dd81cbbb6e5908a68229c1f85c26ac8d7fdef5d0b6c5bcd4a5",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -188,28 +188,28 @@
         "source": "match-wide gap distribution and tag semantics; not public"
       },
       "label_free_postprocess": {
-        "name": "dead_leading_plus_restart_lead_cleanup",
+        "name": "dead_leading_restart_lead_and_other_touch_split",
         "min_s": 5.0,
-        "source": "dead-leading reuses min_alive_s; restart lead trim uses ball visibility; checked on two external Metrica games; no public selection",
+        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trim uses ball visibility; external last-touch check was inert for the split; no public selection",
         "dropped": 18,
-        "changed": 3869,
+        "changed": 15148,
         "public_dropped": 2
       }
     },
     "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 254,
-    "mean_s": 16.01496062992126,
-    "median_s": 11.780000000000001,
+    "possessions": 248,
+    "mean_s": 16.40241935483871,
+    "median_s": 12.04,
     "D_share": 0.3598330574038286,
-    "poss_per_min": 2.4435137856506097
+    "poss_per_min": 2.3857929875643746
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "7b4b3d497ed809a300334494415cd8bd29a45261bb503a3aa363a9cbc1b13b06"
+    "notebook_sha256": "250fa67452fdf1531edfa09b51fe90a58a7eb509292d4578343cbec8598e116d"
   }
 }
