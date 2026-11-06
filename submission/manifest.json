@@ -7,11 +7,11 @@
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used only to fix lam_team=2.0 and touch_rel_max=8.0 m/s; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T14:32:18+00:00",
+  "generated_utc": "2026-11-06T14:36:19+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "4d9b4abb1a0b4e90f0734a27e13f03d64601877b",
+    "commit": "9cb078ab39171ebfac5925fd84035d5d5a669297",
     "source": "git"
   },
   "competition_repo": {
@@ -148,6 +148,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "f56084beb25af81298a2c0f400d9779b09193c8afb1cf88877323542eb38908e"
+    "notebook_sha256": "f03712a37c2af544122c4df4661bd71802cc1fbc7748d88847724cb139178812"
   }
 }
