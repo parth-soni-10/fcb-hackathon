@@ -8,11 +8,11 @@
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T15:33:56+00:00",
+  "generated_utc": "2026-11-06T20:45:45+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "c3689d7adf8f462a369b7355269539aa8e44d2df",
+    "commit": "e2d93c510be02f7562d2dfa9559eec3232eeb7d3",
     "source": "git"
   },
   "competition_repo": {
@@ -57,8 +57,8 @@
     "n_frames": 199319,
     "graded_frames": 158857,
     "fps": 25,
-    "bootstrap_n": 1000,
-    "stress_draws": 10,
+    "bootstrap_n": 64,
+    "stress_draws": 0,
     "config": {
       "kappa": 1.0,
       "clip": 4.0,
@@ -120,12 +120,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "1d06f3a0f4c3aae75cfb437e6828008d91111d31d032db39b4c4f0dd02e7fd4e",
+    "sha256": "d848fa32c46a6852c7b4632561439a2a0c671b748c2c28e972cd640b0cadec8b",
     "rows": 199319,
     "label_counts": {
-      "H": 63604,
-      "A": 41865,
-      "D": 53388,
+      "H": 63054,
+      "A": 41195,
+      "D": 54608,
       "X": 40462
     }
   },
@@ -133,10 +133,10 @@
     "start": 11185,
     "stop": 18685,
     "used_for_selection": false,
-    "spellF1": 0.5935483870967742,
-    "spell_lo": 0.4,
-    "spell_hi": 0.7741935483870968,
-    "macroF1": 0.8217237274717469,
+    "spellF1": 0.6133333333333334,
+    "spell_lo": 0.42866666666666664,
+    "spell_hi": 0.7928817204301075,
+    "macroF1": 0.833160243236751,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
@@ -161,10 +161,10 @@
     },
     "final_package": {
       "public_window": {
-        "spellF1": 0.5935483870967742,
-        "macroF1": 0.8217237274717469
+        "spellF1": 0.6133333333333334,
+        "macroF1": 0.833160243236751
       },
-      "submission_sha256": "1d06f3a0f4c3aae75cfb437e6828008d91111d31d032db39b4c4f0dd02e7fd4e",
+      "submission_sha256": "d848fa32c46a6852c7b4632561439a2a0c671b748c2c28e972cd640b0cadec8b",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -188,28 +188,28 @@
         "source": "match-wide gap distribution and tag semantics; not public"
       },
       "label_free_postprocess": {
-        "name": "dead_bounded_short_spell_cleanup",
+        "name": "dead_leading_short_spell_cleanup",
         "min_s": 5.0,
-        "source": "reuses the pre-registered min_alive_s floor; no public selection",
-        "dropped": 1,
-        "changed": 95,
-        "public_dropped": 1
+        "source": "reuses the pre-registered min_alive_s floor; checked on two external Metrica games; no public selection",
+        "dropped": 18,
+        "changed": 1315,
+        "public_dropped": 2
       }
     },
     "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 271,
-    "mean_s": 15.567380073800738,
-    "median_s": 10.8,
-    "D_share": 0.33607584179482175,
-    "poss_per_min": 2.6070560468949417
+    "possessions": 254,
+    "mean_s": 16.41716535433071,
+    "median_s": 12.04,
+    "D_share": 0.3437557048162813,
+    "poss_per_min": 2.4435137856506097
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "779dc9ff95be4949c011b7f62f665e185b7a495d83aa3d6ff288a247535985bf"
+    "notebook_sha256": "f1604a1d1605537ececc365ac4dc797dcba57132f43903ee631e357b4d6dc4bc"
   }
 }
