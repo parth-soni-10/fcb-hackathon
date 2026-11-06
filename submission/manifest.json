@@ -2,17 +2,17 @@
   "team": "BAU",
   "compliance": {
     "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; an earlier package selected settings from it, but every selected value is reverted or replaced here, so no final setting is selected from the public window; rule 7 is satisfied",
-    "rule_7": "satisfied: no public-window-selected constant remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are external-game choices, and the rebound rule is removed",
+    "rule_7": "satisfied: no public-window-selected constant remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are external-game choices, the long-gap tag prior is label-free, and the rebound rule is removed",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T15:04:28+00:00",
+  "generated_utc": "2026-11-06T15:20:28+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "37006652e06229c7ac8725cf1ba835c89a51a268",
+    "commit": "37e05abbaa335843f57d26ed9f7760bf671df0c6",
     "source": "git"
   },
   "competition_repo": {
@@ -64,6 +64,8 @@
       "clip": 4.0,
       "r_gate": 5.0,
       "w_tag": 0.5,
+      "gap_tag_after_s": 20.0,
+      "w_tag_alive": 1.0,
       "w_shape": 0.6,
       "shape_clip": 2.0,
       "w_touch": 0.5,
@@ -118,12 +120,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "963891ffe073261b4e377b5931ca24e3c7a1c632b82c9d82bc29fc62f993d4ca",
+    "sha256": "c5648d318bf994a4d73c611e0d319b36f4f9823a28a6613960714ae760b2bcb6",
     "rows": 199319,
     "label_counts": {
-      "H": 60497,
-      "A": 41314,
-      "D": 57046,
+      "H": 63699,
+      "A": 41865,
+      "D": 53293,
       "X": 40462
     }
   },
@@ -162,7 +164,7 @@
         "spellF1": 0.575,
         "macroF1": 0.8024879385998599
       },
-      "submission_sha256": "963891ffe073261b4e377b5931ca24e3c7a1c632b82c9d82bc29fc62f993d4ca",
+      "submission_sha256": "c5648d318bf994a4d73c611e0d319b36f4f9823a28a6613960714ae760b2bcb6",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -179,22 +181,27 @@
       "retained_public_selected": {},
       "removed": [
         "rebound/shot rule"
-      ]
+      ],
+      "label_free_gap_prior": {
+        "gap_tag_after_s": 20.0,
+        "w_tag_alive": 1.0,
+        "source": "match-wide gap distribution and tag semantics; not public"
+      }
     },
     "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 269,
-    "mean_s": 15.13918215613383,
-    "median_s": 10.4,
-    "D_share": 0.359102840919821,
-    "poss_per_min": 2.5878157808661966
+    "possessions": 272,
+    "mean_s": 15.524117647058825,
+    "median_s": 10.72,
+    "D_share": 0.3354778196742983,
+    "poss_per_min": 2.616676179909314
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "efde33bf636d01808aff53f9b720a066f292dbf7ea4cfe39cc903ed83fff8c34"
+    "notebook_sha256": "deb5a5d6884fd270769f8804620652b6a41bb5d594e6951ab122bc2172842f10"
   }
 }

@@ -44,6 +44,8 @@ A probabilistic decoder over evidence, not a nearest-player vote. Three layers:
 
 1. **Dead ball vs alive**, decoded first because a stoppage ends a possession. Evidence: the ball outside the pitch, the ball stationary for 3 s or more, a ball that no player comes within 3.0 m of for 1.0 s at under 8.0 m/s, Smart-Tagging set-piece and goal windows enforced as dead until the ball moves, and a logistic model that sees players only, for the frames where the ball is missing.
 
+   A long-gap guard adds a soft alive prior only after 20 s without a visible ball, from a confident open-play tag; set pieces and goals are excluded. It is inactive on the public window (the longest public ball gap is 14.6 s), so the public labels remain byte-identical.
+
 2. **Team inside each alive stretch**, a two-state Viterbi over log-odds evidence with a fixed switch penalty in nat-seconds, so a flip needs accumulated evidence: the 'controlled possession' rule from CHALLENGE.md, where a loose ball or a deflection leaves possession where it was. Evidence: the gated distance advantage of the ball to each team; the team that last had a foot on the ball, carried as a state through the frames where the ball is in flight or missing but aged while the ball is out of sight; Smart-Tagging phases with possession semantics (a Defending tag means the opponent has the ball); and a team-shape model on ball-less frames.
 
 The last-touch state has a control gate: a touch counts only when the ball and the nearest player move together at under 8 m/s. This was fixed on the two external games (last-touch agreement 0.940/0.960 versus 0.820/0.782 without it), not on this window.
@@ -52,7 +54,7 @@ The switch cost is flat at `lam_team = 2.00` nat*s. The final external configura
 
 3. **Self-supervision**, no labels involved: on frames where the ball is visible we derive confident pseudo-labels from ball kinematics and proximity, train two small L2 logistic regressions on player-only features, and apply them where the ball is missing. No model is fitted to the public ground truth.
 
-**Fixed settings.** `w_touch = 0.50`, `w_tag = 0.50`, `r_iso = 3.0 m` and the run-length floors are the pre-registered baseline. `lam_team = 2.0`, `touch_rel_max = 8.0 m/s`, `touch_dist = 1.25 m`, `kappa = 1.0` and `r_gate = 5.0` are external-game settings. The no-progress cue is disabled (`kin_np = 0`). No public-window-selected value remains.
+**Fixed settings.** `w_touch = 0.50`, `w_tag = 0.50`, `r_iso = 3.0 m` and the run-length floors are the pre-registered baseline. `lam_team = 2.0`, `touch_rel_max = 8.0 m/s`, `touch_dist = 1.25 m`, `kappa = 1.0` and `r_gate = 5.0` are external-game settings. The no-progress cue is disabled (`kin_np = 0`). The long-gap open-play guard (`gap_tag_after_s = 20.0 s`, `w_tag_alive = 1.0`) is fixed from the match-wide gap distribution and tag semantics, not the public window. No public-window-selected value remains.
 
 Deterministic: fixed seeds, no random initialisation, so rerunning on the same bundle reproduces the same file.
 
@@ -61,6 +63,8 @@ Deterministic: fixed seeds, no random initialisation, so rerunning on the same b
 Every asset is automatic and uncorrected, so none of it is treated as an observation of the answer. On this bundle the ball is visible on 59.3% of graded frames (56.9% across the whole video); the missing frames are not scattered, the median gap is 10.7 s and 67% of all ball-less graded frames sit in gaps longer than 20 s.
 
 * **No gap filling by interpolation.** Bridging a 20 s occlusion with a straight line would invent a possession. Where the ball is absent the team is decided by the player-only shape model and the Smart-Tagging prior instead, both of which stay defined.
+
+* **Long-gap open-play guard.** After 20 s without a visible ball, a confident open-play tag (|weighted tag evidence| >= 0.5; set pieces/goals excluded) contributes a fixed 1.0 nat alive prior. It is a soft prior: the player-only model still wins when it is strongly dead. On the full match it is active on 4462 graded frames; the open-play-tag contradiction count falls from 3953 to 1080 and 3753 labels change. 0 public frames are affected because the public window has no ball gap that long.
 
 * **Track slots are not players.** 46 slots for 22 people, with fragmentation and identity switches, so nothing is computed per player. Only collective features are used, and they are mean-of-visible-values, so a slot vanishing does not become a position at (0, 0).
 
@@ -74,6 +78,8 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 |---|---|---|
 | tactical ATD (players + ball) | yes | positions and speeds in metres, 46 slots, ball visibility as delivered |
 | Smart Tagging | yes | team evidence bounded by `w_tag`, weighted mean over the phases covering each frame; set-piece and goal windows enforced dead |
+Smart Tagging also supplies the **gap-only alive prior**: an open-play tag is evidence, never a label, and is consulted only after the ball has been absent for 20 s.
+
 | tactical homography | loaded and checked, not used | no decision depends on image space; one row per frame was verified |
 | public ground truth | evaluation only | read for diagnostics and the final score; the earlier package's selected constants are all reverted in this package |
 | external Metrica sample games | five final settings | event timelines fixed `lam_team`, the 8 m/s gate, `touch_dist`, `kappa` and `r_gate`; not training data, not redistributed |
@@ -91,6 +97,8 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 * The ball is treated as dead when it is visible and no slot comes within 3.0 m of it for 1.0 s, at under 8.0 m/s. 7.1% of graded frames satisfy it.
 
 * An alive gap shorter than 5.0 s between two dead stretches is the same stoppage, not a possession. A post-hoc check on the public window, used only for reporting, moves neither dead recall nor precision (62.7% and 91.2%); the floor is a backstop for stoppages no tag covers and moves 0.1% of graded labels.
+
+* Once the ball has been absent for 20 s, a confident open-play tag acts as a 1.0 nat alive prior; set pieces and goals are excluded. It is a prior, not a forced label, so a strongly dead player-only frame can still stay dead.
 
 * Published forced rules: half 1 is graded from the kickoff itself; the 2934 graded frames of half 2 before it kicks off are dead ball.
 
@@ -110,7 +118,7 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 Only the submitted file and the shipped baselines are shown. The earlier package was ranked on this window; all of its public-selected values are reverted, so this score is a post-hoc check, not a selection result.
 
-Full-match diagnostics of the submitted labels (no ground truth involved): 269 possessions, mean 15.1 s, median 10.4 s, dead-ball share 35.9%, 2.59 possessions per play minute.
+Full-match diagnostics of the submitted labels (no ground truth involved): 272 possessions, mean 15.5 s, median 10.7 s, dead-ball share 33.5%, 2.62 possessions per play minute.
 
 Stress test - the public window with the ball masked to the match-wide visibility, averaged over 10 draw(s). This is a robustness check, not a selection step:
 
@@ -126,7 +134,9 @@ On that window the submitted labels score spellF1 **0.575** [0.388, 0.750] and m
 
 * **Public-window history is disclosed, not reused.** Every earlier public-selected value is reverted or replaced; the final config contains no public-window-selected constant, so RULES.md #7 is satisfied. The 0.575 score is a post-hoc five-minute estimate, not a full-match forecast.
 
-* Long ball-less gaps dominate the error budget. 41% of graded frames have no ball, and 67% of those missing frames sit in gaps longer than 20 s, where the player-only models are doing all the work on weak evidence.
+* Long ball-less gaps dominate the error budget. 41% of graded frames have no ball, and 67% of those missing frames sit in gaps longer than 20 s, where the player-only models and the long-gap tag guard are doing the work on weak evidence.
+
+* The gap-only open-play guard now supplies tag evidence after 20 s, but where no tag says open play the player-only models still do all the work. It changes no public frame, so the public score is not evidence for it.
 
 * The team call is where the rest of the headroom is. The remaining team errors are mostly a convention gap rather than a missing cue: the geometric evidence often prefers the team the ground truth does not name. This is the difference between 'nearest to the ball' and 'playing the ball'.
 
@@ -157,4 +167,4 @@ MTAH_TEAM=BAU MTAH_DATA_DIR='<bundle>' MTAH_WORK_DIR='<out>' \
 
 The match data and the external sample data are not redistributed with this document or the repository.
 
-Generated by the run that wrote `BAU.csv` (sha256 `963891ffe073261b4e377b5931ca24e3c7a1c632b82c9d82bc29fc62f993d4ca`), so a stale copy of this document is detectable.
+Generated by the run that wrote `BAU.csv` (sha256 `c5648d318bf994a4d73c611e0d319b36f4f9823a28a6613960714ae760b2bcb6`), so a stale copy of this document is detectable.
