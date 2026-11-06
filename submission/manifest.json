@@ -1,18 +1,18 @@
 {
   "team": "BAU",
   "compliance": {
-    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score, and in an earlier package to select settings. The shipped package reverts r_iso, haz_gamma and kin_np, removes the rebound rule, replaces lam_team with an external-game value, but retains w_tag=0.75; rule 7 is not fully satisfied and the 0.575 score is not a clean post-hoc estimate",
-    "rule_7": "not fully satisfied: w_tag=0.75 was selected on the public window in the earlier package and remains in the final config",
+    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; an earlier package selected settings from it, but every selected value is reverted or replaced here, so no final setting is selected from the public window; rule 7 is satisfied",
+    "rule_7": "satisfied: no public-window-selected constant remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are external-game choices, and the rebound rule is removed",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
-    "external_data": "two Metrica sample games used to fix the final lam_team=2.0 and touch_rel_max=8.0 m/s; the gate was also tested on the public window in the earlier package; not training data; not redistributed"
+    "external_data": "two Metrica sample games used to fix the final lam_team=2.0, touch_rel_max=8.0, touch_dist=1.25, kappa=1.0 and r_gate=5.0; the gate was also tested on the public window in the earlier package; the radius is external-only; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T14:49:04+00:00",
+  "generated_utc": "2026-11-06T15:04:28+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "0933585f2638139f60b4f89ba4c436e79b45a234",
+    "commit": "048a593d3d87b398ea23e30ab6825145c73d6e41",
     "source": "git"
   },
   "competition_repo": {
@@ -60,14 +60,14 @@
     "bootstrap_n": 1000,
     "stress_draws": 10,
     "config": {
-      "kappa": 0.8,
+      "kappa": 1.0,
       "clip": 4.0,
-      "r_gate": 7.0,
-      "w_tag": 0.75,
+      "r_gate": 5.0,
+      "w_tag": 0.5,
       "w_shape": 0.6,
       "shape_clip": 2.0,
       "w_touch": 0.5,
-      "touch_dist": 1.5,
+      "touch_dist": 1.25,
       "touch_hold_s": 0.12,
       "touch_decay_s": 5.0,
       "touch_rel_max": 8.0,
@@ -118,11 +118,11 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "6e22d8572d2eb165e7944d5256d0df0cec37c4d6f94319b570b27b5c911a256f",
+    "sha256": "963891ffe073261b4e377b5931ca24e3c7a1c632b82c9d82bc29fc62f993d4ca",
     "rows": 199319,
     "label_counts": {
-      "H": 60938,
-      "A": 40873,
+      "H": 60497,
+      "A": 41314,
       "D": 57046,
       "X": 40462
     }
@@ -130,16 +130,16 @@
   "public_window": {
     "start": 11185,
     "stop": 18685,
-    "used_for_selection": true,
+    "used_for_selection": false,
     "spellF1": 0.575,
     "spell_lo": 0.3875,
     "spell_hi": 0.75,
-    "macroF1": 0.8012910163190288,
+    "macroF1": 0.8024879385998599,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
   "selection_history": {
-    "status": "partial_compliance_public_window_selection",
+    "status": "fully_compliant_public_selection_reverted",
     "earlier_package": {
       "commit": "eb9c32a",
       "public_window": {
@@ -160,39 +160,41 @@
     "final_package": {
       "public_window": {
         "spellF1": 0.575,
-        "macroF1": 0.8012910163190288
+        "macroF1": 0.8024879385998599
       },
-      "submission_sha256": "6e22d8572d2eb165e7944d5256d0df0cec37c4d6f94319b570b27b5c911a256f",
+      "submission_sha256": "963891ffe073261b4e377b5931ca24e3c7a1c632b82c9d82bc29fc62f993d4ca",
       "reverted": {
+        "w_tag": 0.5,
         "r_iso": 3.0,
         "haz_gamma": 0.0,
         "kin_np": 0.0
       },
       "replaced_with_external": {
         "lam_team": 2.0,
-        "touch_rel_max": 8.0
+        "touch_rel_max": 8.0,
+        "touch_dist": 1.25,
+        "kappa": 1.0,
+        "r_gate": 5.0
       },
-      "retained_public_selected": {
-        "w_tag": 0.75
-      },
+      "retained_public_selected": {},
       "removed": [
         "rebound/shot rule"
       ]
     },
-    "note": "The final package is not fully independent of the public five minutes because w_tag=0.75 is retained; see the technical document's Selection history section."
+    "note": "All public-window-selected values from the earlier package are reverted or replaced; no retained value remains and rule 7 is satisfied. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 257,
-    "mean_s": 15.846070038910508,
-    "median_s": 10.44,
+    "possessions": 269,
+    "mean_s": 15.13918215613383,
+    "median_s": 10.4,
     "D_share": 0.359102840919821,
-    "poss_per_min": 2.472374184693727
+    "poss_per_min": 2.5878157808661966
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "d6b212b07f96c4b5ebba875f7af7609dbe602014f46579a95e456fee7c276eb3"
+    "notebook_sha256": "efde33bf636d01808aff53f9b720a066f292dbf7ea4cfe39cc903ed83fff8c34"
   }
 }
