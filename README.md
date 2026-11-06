@@ -108,8 +108,8 @@ explicit about how little the five-minute window can decide.
   Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected.
 - **The private ground truth is not used.** The decoder's constants are the pre-registered
   baseline plus two settings fixed on two external Metrica sample games (other games). The published
-  five minutes are used only for post-hoc verification and the final score, never to fit a model or
-  choose a setting.
+  five minutes are used for diagnostics, post-hoc verification and the final score, never as a model
+  input or to choose a setting.
 - **Zero hand labels from the provided game.** No frame was hand-labelled or hand-corrected, and no
   human labeller was used. The two external sample games contribute only the two fixed constants;
   they are not training data and are not redistributed.
