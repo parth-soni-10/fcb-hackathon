@@ -51,7 +51,7 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 | tactical ATD (players + ball) | yes | positions and speeds in metres, 46 slots, ball visibility as delivered |
 | Smart Tagging | yes | team evidence bounded by `w_tag`, weighted mean over the phases covering each frame; set-piece and goal windows enforced dead |
 | tactical homography | loaded and checked, not used | no decision depends on image space; one row per frame was verified |
-| public ground truth | evaluation only | read after the CSV was fixed, for post-hoc checks and the final score |
+| public ground truth | evaluation only | read for descriptive analysis, pseudo-label quality checks, post-hoc checks and the final score; never an input or a selector |
 | external Metrica sample games | two constants only | event timelines fixed `lam_team` and the relative-speed touch gate; not training data, not redistributed |
 | broadcast ATD / video | not used | the video was not decoded |
 | own ball detection | not attempted | the honest next step for the long ball-less gaps |
