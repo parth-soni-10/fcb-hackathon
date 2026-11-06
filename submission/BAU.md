@@ -44,7 +44,7 @@ A probabilistic decoder over evidence, not a nearest-player vote. Three layers:
 
 1. **Dead ball vs alive**, decoded first because a stoppage ends a possession. Evidence: the ball outside the pitch, the ball stationary for 3 s or more, a ball that no player comes within 3.0 m of for 1.0 s at under 8.0 m/s, Smart-Tagging set-piece and goal windows enforced as dead until the ball moves, and a logistic model that sees players only, for the frames where the ball is missing.
 
-   A long-gap guard adds a soft alive prior only after 20 s without a visible ball, from a confident open-play tag; set pieces and goals are excluded. It is inactive on the public window (the longest public ball gap is 14.6 s), so the public labels remain byte-identical.
+   A long-gap guard adds a soft alive prior only after 20 s without a visible ball, from a confident open-play tag; set pieces and goals are excluded. It is inactive on the public window (the longest public ball gap is 14.6 s); the guard itself leaves the public labels unchanged, while the separate dead-bounded short-spell cleanup changes one public possession, as reported in section 4.
 
 2. **Team inside each alive stretch**, a two-state Viterbi over log-odds evidence with a fixed switch penalty in nat-seconds, so a flip needs accumulated evidence: the 'controlled possession' rule from CHALLENGE.md, where a loose ball or a deflection leaves possession where it was. Evidence: the gated distance advantage of the ball to each team; the team that last had a foot on the ball, carried as a state through the frames where the ball is in flight or missing but aged while the ball is out of sight; Smart-Tagging phases with possession semantics (a Defending tag means the opponent has the ball); and a team-shape model on ball-less frames.
 
@@ -65,6 +65,8 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 * **No gap filling by interpolation.** Bridging a 20 s occlusion with a straight line would invent a possession. Where the ball is absent the team is decided by the player-only shape model and the Smart-Tagging prior instead, both of which stay defined.
 
 * **Long-gap open-play guard.** After 20 s without a visible ball, a confident open-play tag (|weighted tag evidence| >= 0.5; set pieces/goals excluded) contributes a fixed 1.0 nat alive prior. It is a soft prior: the player-only model still wins when it is strongly dead. On the full match it is active on 4462 graded frames; the open-play-tag contradiction count falls from 3953 to 1080 and 3753 labels change. 0 public frames are affected because the public window has no ball gap that long.
+
+* **Dead-bounded short-spell cleanup.** A team run shorter than the existing 5.0 s alive floor, with decoded dead ball immediately on both sides, is an isolated alive blip rather than a possession and is relabelled dead. This is a label-free post-pass that reuses the pre-registered floor; it adds no public-selected constant. It removes 1 possession(s) and 95 frame(s) on the full match, including 1 possession(s) in the public window.
 
 * **Track slots are not players.** 46 slots for 22 people, with fragmentation and identity switches, so nothing is computed per player. Only collective features are used, and they are mean-of-visible-values, so a slot vanishing does not become a position at (0, 0).
 
@@ -110,7 +112,7 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 | submission | spellF1 | macroF1 | poss | dur_s |
 |---|---|---|---|---|
-| BAU_full | 0.575 | 0.802 | 15 | 17.307 |
+| BAU_full | 0.594 | 0.822 | 14 | 18.271 |
 | baseline_smooth125 | 0.424 | 0.581 | 16 | 18.460 |
 | baseline_smooth50 | 0.326 | 0.621 | 26 | 10.803 |
 | baseline_smooth25 | 0.287 | 0.620 | 36 | 7.580 |
@@ -118,7 +120,7 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 Only the submitted file and the shipped baselines are shown. The earlier package was ranked on this window; all of its public-selected values are reverted, so this score is a post-hoc check, not a selection result.
 
-Full-match diagnostics of the submitted labels (no ground truth involved): 272 possessions, mean 15.5 s, median 10.7 s, dead-ball share 33.5%, 2.62 possessions per play minute.
+Full-match diagnostics of the submitted labels (no ground truth involved): 271 possessions, mean 15.6 s, median 10.8 s, dead-ball share 33.6%, 2.61 possessions per play minute.
 
 Stress test - the public window with the ball masked to the match-wide visibility, averaged over 10 draw(s). This is a robustness check, not a selection step:
 
@@ -128,11 +130,11 @@ Stress test - the public window with the ball masked to the match-wide visibilit
 | baseline_smooth125 | 0.325 | 0.058 | 0.552 | 0.062 | 17.100 |
 | baseline_smooth50 | 0.250 | 0.039 | 0.531 | 0.061 | 24.600 |
 
-On that window the submitted labels score spellF1 **0.575** [0.388, 0.750] and macroF1 **0.802**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
+On that window the submitted labels score spellF1 **0.594** [0.400, 0.774] and macroF1 **0.822**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
 
 ## 6. Limitations
 
-* **Public-window history is disclosed, not reused.** Every earlier public-selected value is reverted or replaced; the final config contains no public-window-selected constant, so RULES.md #7 is satisfied. The 0.575 score is a post-hoc five-minute estimate, not a full-match forecast.
+* **Public-window history is disclosed, not reused.** Every earlier public-selected value is reverted or replaced; the final config contains no public-window-selected constant, so RULES.md #7 is satisfied. The 0.594 score is a post-hoc five-minute estimate, not a full-match forecast.
 
 * Long ball-less gaps dominate the error budget. 41% of graded frames have no ball, and 67% of those missing frames sit in gaps longer than 20 s, where the player-only models and the long-gap tag guard are doing the work on weak evidence.
 
@@ -167,4 +169,4 @@ MTAH_TEAM=BAU MTAH_DATA_DIR='<bundle>' MTAH_WORK_DIR='<out>' \
 
 The match data and the external sample data are not redistributed with this document or the repository.
 
-Generated by the run that wrote `BAU.csv` (sha256 `c5648d318bf994a4d73c611e0d319b36f4f9823a28a6613960714ae760b2bcb6`), so a stale copy of this document is detectable.
+Generated by the run that wrote `BAU.csv` (sha256 `1d06f3a0f4c3aae75cfb437e6828008d91111d31d032db39b4c4f0dd02e7fd4e`), so a stale copy of this document is detectable.
