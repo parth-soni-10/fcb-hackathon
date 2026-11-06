@@ -1,17 +1,18 @@
 {
   "team": "BAU",
   "compliance": {
-    "ground_truth": "public five minutes read for descriptive analysis, pseudo-label quality checks, post-hoc checks and the final score; never an input to the decoder and no setting selected from it",
+    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score, and in an earlier package to select settings. The shipped package reverts r_iso, haz_gamma and kin_np, removes the rebound rule, replaces lam_team with an external-game value, but retains w_tag=0.75; rule 7 is not fully satisfied and the 0.575 score is not a clean post-hoc estimate",
+    "rule_7": "not fully satisfied: w_tag=0.75 was selected on the public window in the earlier package and remains in the final config",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
-    "external_data": "two Metrica sample games used only to fix lam_team=2.0 and touch_rel_max=8.0 m/s; not training data; not redistributed"
+    "external_data": "two Metrica sample games used to fix the final lam_team=2.0 and touch_rel_max=8.0 m/s; the gate was also tested on the public window in the earlier package; not training data; not redistributed"
   },
-  "generated_utc": "2026-11-06T14:36:19+00:00",
+  "generated_utc": "2026-11-06T14:49:04+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "71359b445ba588d20a5d3536a5a79a25a1139b8e",
+    "commit": "5c006acd36ef12453299034389566de6bc9f0468",
     "source": "git"
   },
   "competition_repo": {
@@ -129,12 +130,56 @@
   "public_window": {
     "start": 11185,
     "stop": 18685,
+    "used_for_selection": true,
     "spellF1": 0.575,
     "spell_lo": 0.3875,
     "spell_hi": 0.75,
     "macroF1": 0.8012910163190288,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
+  },
+  "selection_history": {
+    "status": "partial_compliance_public_window_selection",
+    "earlier_package": {
+      "commit": "eb9c32a",
+      "public_window": {
+        "spellF1": 0.6514285714285715,
+        "macroF1": 0.8482460670899972
+      },
+      "submission_sha256": "dbdaebf22bec39af34df2eea94559d321886bb153d276ac58720dabfb74f99ac",
+      "public_selected": {
+        "w_tag": 0.75,
+        "r_iso": 2.0,
+        "haz_gamma": 0.25,
+        "kin_np": 1.0,
+        "lam_team": 1.5,
+        "no_progress": "10 m over 3 s at 1-8 m/s",
+        "rebound_rule": "20 m/s, within 22 m of the goal, control within 2 s"
+      }
+    },
+    "final_package": {
+      "public_window": {
+        "spellF1": 0.575,
+        "macroF1": 0.8012910163190288
+      },
+      "submission_sha256": "6e22d8572d2eb165e7944d5256d0df0cec37c4d6f94319b570b27b5c911a256f",
+      "reverted": {
+        "r_iso": 3.0,
+        "haz_gamma": 0.0,
+        "kin_np": 0.0
+      },
+      "replaced_with_external": {
+        "lam_team": 2.0,
+        "touch_rel_max": 8.0
+      },
+      "retained_public_selected": {
+        "w_tag": 0.75
+      },
+      "removed": [
+        "rebound/shot rule"
+      ]
+    },
+    "note": "The final package is not fully independent of the public five minutes because w_tag=0.75 is retained; see the technical document's Selection history section."
   },
   "diagnostics": {
     "possessions": 257,
@@ -148,6 +193,6 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "f03712a37c2af544122c4df4661bd71802cc1fbc7748d88847724cb139178812"
+    "notebook_sha256": "d6b212b07f96c4b5ebba875f7af7609dbe602014f46579a95e456fee7c276eb3"
   }
 }
