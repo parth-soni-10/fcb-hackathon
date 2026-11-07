@@ -1,18 +1,18 @@
 {
   "team": "BAU",
   "compliance": {
-    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; an earlier package selected settings from it, a later public-selected dead-model candidate was removed, and every external-data setting was removed, so no final setting or post-processing pass is selected from the public window",
-    "public_selection": "satisfied: no public-window-selected constant or post-processing pass remains; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are fixed a priori, the long-gap tag prior is label-free, the rebound rule is removed, and the public-selected dead-model candidate is removed",
+    "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; earlier packages selected constants and post-passes from it, all selected constants and two public-selected post-passes are removed, and two external-selected post-passes were removed too, so no final setting or post-processing pass is selected from the public window",
+    "public_selection": "satisfied: every public-selected constant and both public-selected post-passes are removed; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are fixed a priori, the long-gap tag prior is label-free, the rebound rule is removed, and the public-selected dead-model candidate is removed; only the structural self-touch trim remains",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
-    "external_data": "none: no external dataset is loaded, required or redistributed; an earlier external sample-game candidate and every setting derived from it are removed"
+    "external_data": "none: no external dataset is loaded, required or redistributed; an earlier external sample-game candidate, every setting derived from it, and two external-selected post-passes are removed"
   },
-  "generated_utc": "2026-11-06T23:41:13+00:00",
+  "generated_utc": "2026-11-06T23:59:42+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "ce3a60effaf79ebbca30e84ce6df9ea55ce4d7f8",
+    "commit": "1132a6d6236f9e823bd9bb11078dae81c2ac45dc",
     "source": "git"
   },
   "competition_repo": {
@@ -119,12 +119,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "9d49236de690d9166b1b7607f4cccaa95a7f26ea13c0ddf404843df47b882150",
+    "sha256": "c9fb372aa1af9c5488bfe222c25730f7714ee5eed95b8df800ed784a407e725f",
     "rows": 199319,
     "label_counts": {
-      "H": 57439,
-      "A": 42744,
-      "D": 58674,
+      "H": 62423,
+      "A": 41793,
+      "D": 54641,
       "X": 40462
     }
   },
@@ -132,10 +132,10 @@
     "start": 11185,
     "stop": 18685,
     "used_for_selection": false,
-    "spellF1": 0.625,
-    "spell_lo": 0.46437500000000004,
-    "spell_hi": 0.7856249999999999,
-    "macroF1": 0.8467759202062745,
+    "spellF1": 0.5625,
+    "spell_lo": 0.389375,
+    "spell_hi": 0.725,
+    "macroF1": 0.799151291726095,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
@@ -160,10 +160,10 @@
     },
     "final_package": {
       "public_window": {
-        "spellF1": 0.625,
-        "macroF1": 0.8467759202062745
+        "spellF1": 0.5625,
+        "macroF1": 0.799151291726095
       },
-      "submission_sha256": "9d49236de690d9166b1b7607f4cccaa95a7f26ea13c0ddf404843df47b882150",
+      "submission_sha256": "c9fb372aa1af9c5488bfe222c25730f7714ee5eed95b8df800ed784a407e725f",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -177,42 +177,67 @@
         "r_gate": 7.0
       },
       "retained_public_selected": {},
-      "removed": [
-        "rebound/shot rule",
-        "sustained player-only dead-model split (public-selected candidate)",
-        "external sample-game configuration (unlicensed source)"
+      "removed_public_postprocess": [
+        {
+          "name": "dead_bounded_short_spell_cleanup",
+          "commit": "c3689d7",
+          "reason": "commit records public spellF1 0.575 -> 0.5935"
+        },
+        {
+          "name": "sustained_other_touch_split",
+          "commit": "72463c0",
+          "reason": "public floor sweep at 21:02 preceded the 21:04 commit; the winning 125-frame floor shipped"
+        }
       ],
+      "removed_external_postprocess": [
+        {
+          "name": "dead_leading_short_spell_cleanup",
+          "commit": "e2d93c5",
+          "reason": "selected on two external Metrica games"
+        },
+        {
+          "name": "restart_lead_until_visible",
+          "commit": "93f4c6e",
+          "reason": "selected on two external Metrica games"
+        }
+      ],
+      "retained_structural_postprocess": {
+        "name": "restart_lead_until_self_touch",
+        "commit": "9171c5f",
+        "source": "uses the decoder's last-touch state; adds no threshold; not selected on public or external labels",
+        "trimmed": 1348,
+        "public_trimmed": 10,
+        "changed": 1348
+      },
       "label_free_gap_prior": {
         "gap_tag_after_s": 20.0,
         "w_tag_alive": 1.0,
         "source": "match-wide gap distribution and tag semantics; not public"
       },
-      "label_free_postprocess": {
-        "name": "dead_leading_restart_lead_self_touch_and_other_touch_split",
-        "min_s": 5.0,
-        "source": "dead-leading and other-touch split reuse min_alive_s; restart lead trims use ball visibility and self-touch support; the post-trim short-spell cleanup is a structural closure; no external data and no public selection",
-        "dropped": 27,
-        "changed": 14140,
-        "public_dropped": 3,
-        "support_trimmed": 689,
-        "public_support_trimmed": 16,
-        "post_trim_dropped": 11
-      }
+      "removed": [
+        "rebound/shot rule",
+        "sustained player-only dead-model split (public-selected candidate)",
+        "external sample-game configuration (unlicensed source)",
+        "dead_bounded_short_spell_cleanup (public-selected post-pass)",
+        "sustained_other_touch_split (public-selected post-pass)",
+        "dead_leading_short_spell_cleanup (external-selected post-pass)",
+        "restart_lead_until_visible (external-selected post-pass)"
+      ]
     },
-    "note": "All public-window-selected values from the earlier package are reverted or replaced; the public-selected dead-model candidate is removed; the external-data candidate and every setting derived from it are removed; no retained value or post-processing pass remains. The final pipeline loads no external dataset. The public score is a post-hoc check; see the technical document's Selection history section."
+    "note": "All public- and external-selected constants and post-passes are removed. The only post-pass is the structural restart self-touch trim. No external dataset is loaded. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 240,
-    "mean_s": 16.697166666666664,
-    "median_s": 11.780000000000001,
-    "D_share": 0.3693510515746867,
-    "poss_per_min": 2.308831923449395
+    "possessions": 249,
+    "mean_s": 16.741526104417673,
+    "median_s": 11.24,
+    "D_share": 0.3439634388160421,
+    "poss_per_min": 2.395413120578747
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26220-SP0",
-    "notebook_sha256": "8dbce24da12524972cdecb5725d8a48b410a610c9fa0ac5a6fbba22404af1edc"
+    "notebook_sha256": "4bf01b93a1114533e100c59976f1fe65b5f760323736ae2880c8ad9698a9edf4"
   }
 }
