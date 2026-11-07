@@ -85,7 +85,11 @@ Drive, and runs without one if `MTAH_DATA_DIR` and `MTAH_WORK_DIR` are set.
 
 The labels are deterministic: fixed seeds, no random initialisation, no training on the public
 labels, and the CSV is written with `\n` line endings so a Windows run and a Linux run produce the
-same bytes. The final values are fixed from the tracking geometry and the possession definition:
+same bytes. The two player-only models are calibrated on six contiguous held-out blocks of
+ball-derived pseudo-labels, never on the public window: team L2 = 100 and dead-ball L2 = 10, with
+team separation and centroid motion added to the dead model. Those choices improved held-out
+pseudo-label log-loss from 0.4665 to 0.4578 (team) and from 0.2057 to 0.1921 (dead). The final values
+are fixed from the tracking geometry and the possession definition:
 `lam_team=2.5`, `touch_dist=1.5 m`, `kappa=0.8` and `r_gate=7.0`; there is no relative-speed
 touch gate and no external dataset. The label-free long-gap open-play prior (`gap_tag_after_s=20.0`, `w_tag_alive=1.0`) is fixed from the match-wide gap structure and the tag scale, not from the public window. The public-selected dead-bounded short-spell cleanup and other-touch split, and the external-selected dead-leading cleanup and visible-ball trim, are removed. The only post-pass is the structural restart self-touch trim: after dead ball, the lead-in is held dead until the possessing team has a controlled touch; it uses the decoder's last-touch state and adds no threshold. The age hazard is disabled as the simpler flat structural rule. The
 earlier package selected constants on the public window; every one of those values is reverted or
@@ -107,10 +111,12 @@ explicit about how little the five-minute window can decide.
 ## Rules
 
 - **The labels come out of an algorithm**  a probabilistic decoder over ball geometry, Smart
-  Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected.
+  Tagging and self-supervised player-shape models. Nothing is hand-labelled or hand-corrected. The
+  player-only model calibration is label-free, selected on held-out pseudo-labels only.
 - **The private ground truth is not used.** The final values are fixed from the tracking geometry
   and the possession definition: `lam_team=2.5`, `touch_dist=1.5 m`, `kappa=0.8`, `r_gate=7.0`, with no
-  relative-speed touch gate. No external dataset is used. A label-free long-gap open-play prior is fixed from the match-wide gap structure; it is inactive on the public window. All public- and external-selected post-passes are removed. The only post-pass is the structural restart self-touch trim: it holds post-dead frames dead until the possessing team has a controlled touch, using the decoder's last-touch state and no new threshold. The published five minutes
+  relative-speed touch gate. No external dataset is used. A label-free long-gap open-play prior is fixed from the match-wide gap structure; it is inactive on the public window. All public- and external-selected post-passes are removed. The only post-pass is the structural restart self-touch trim: it holds post-dead frames dead until the possessing team has a controlled touch, using the decoder's last-touch state and no new threshold.  The player-only model calibration (team L2 = 100, dead L2 = 10, dead-ball separation and centroid
+  motion) was selected on held-out pseudo-labels, not the public window. The published five minutes
   were also used to select constants in the earlier package; every one of those values is reverted
   or replaced in this package, the external-data candidate is removed, and no public-window-selected or external-data constant or post-processing pass remains. Details are in the technical document and `manifest.json`.
 - **Zero hand labels from the provided game.** No frame was hand-labelled or hand-corrected, and no
