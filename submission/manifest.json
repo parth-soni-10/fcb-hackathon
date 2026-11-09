@@ -12,7 +12,7 @@
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "1494867481415faec76f2cb75ab177c25fc0c5f5",
+    "commit": "e947089d8fa994cec9e565d9511ed6651424c8d8",
     "source": "git"
   },
   "competition_repo": {
@@ -144,7 +144,7 @@
   "selection_history": {
     "status": "compliant_no_public_or_external_selection",
     "earlier_package": {
-      "commit": "eb9c32a",
+      "commit": "42bfe01",
       "public_window": {
         "spellF1": 0.6514285714285715,
         "macroF1": 0.8482460670899972
@@ -192,30 +192,30 @@
       "removed_public_postprocess": [
         {
           "name": "dead_bounded_short_spell_cleanup",
-          "commit": "c3689d7",
+          "commit": "5f3c254",
           "reason": "commit records public spellF1 0.575 -> 0.5935"
         },
         {
           "name": "sustained_other_touch_split",
-          "commit": "72463c0",
+          "commit": "d6a7233",
           "reason": "public floor sweep at 21:02 preceded the 21:04 commit; the winning 125-frame floor shipped"
         }
       ],
       "removed_external_postprocess": [
         {
           "name": "dead_leading_short_spell_cleanup",
-          "commit": "e2d93c5",
+          "commit": "fd69923",
           "reason": "selected on two external Metrica games"
         },
         {
           "name": "restart_lead_until_visible",
-          "commit": "93f4c6e",
+          "commit": "2d293bd",
           "reason": "selected on two external Metrica games"
         }
       ],
       "retained_structural_postprocess": {
         "name": "restart_lead_until_self_touch",
-        "commit": "9171c5f",
+        "commit": "8491497",
         "source": "uses the decoder's last-touch state; adds no threshold; not selected on public or external labels",
         "trimmed": 500,
         "public_trimmed": 10,

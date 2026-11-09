@@ -36,13 +36,13 @@ The shipped package contains no public- or external-selected constant or post-pr
 The external-data candidate also supplied the 8 m/s relative-speed touch gate, `touch_dist = 1.25 m`, `kappa = 1.0` and `r_gate = 5.0`. All are removed. The shipped values are the geometry-fixed `touch_dist = 1.5 m`, `kappa = 0.8` and `r_gate = 7.0`, with no relative-speed gate. A sample-data repository with no license cannot support a shipped setting.
 
 
-* Two public-selected post-passes were removed: `drop_dead_bounded_short_spells` (commit `c3689d7`; its commit message records the public spellF1 gain from 0.575 to 0.5935) and `split_sustained_other_touch` (commit `72463c0`; the public floor sweep immediately preceded the commit and the winning 125-frame floor is what shipped).
+* Two public-selected post-passes were removed: `drop_dead_bounded_short_spells` (commit `5f3c254`; its commit message records the public spellF1 gain from 0.575 to 0.5935) and `split_sustained_other_touch` (commit `d6a7233`; the public floor sweep immediately preceded the commit and the winning 125-frame floor is what shipped).
 
-* Two external-selected post-passes were removed: `drop_dead_leading_short_spells` (commit `e2d93c5`, selected on the two external Metrica games) and `trim_restart_lead_until_visible` (commit `93f4c6e`, also selected on those games).
+* Two external-selected post-passes were removed: `drop_dead_leading_short_spells` (commit `fd69923`, selected on the two external Metrica games) and `trim_restart_lead_until_visible` (commit `2d293bd`, also selected on those games).
 
 * A later candidate added a sustained player-only dead-model split. It was evaluated on the public window, so it was not shipped; no part of that pass remains.
 
-* The only retained post-pass is `trim_restart_lead_until_self_touch` (commit `9171c5f`). It uses the decoder's existing last-touch state and adds no threshold; it is structural and was not selected on public or external labels. It changes 500 frame(s) on the full match, 10 in the public window.
+* The only retained post-pass is `trim_restart_lead_until_self_touch` (commit `8491497`). It uses the decoder's existing last-touch state and adds no threshold; it is structural and was not selected on public or external labels. It changes 500 frame(s) on the full match, 10 in the public window.
 
 No public- or external-selected constant or post-processing pass remains in the final configuration. The player-only models were calibrated on six contiguous held-out pseudo-label blocks: team L2 = 100 (AUC 0.8539 -> 0.8547, log-loss 0.4665 -> 0.4578) and dead L2 = 10 with team separation/centroid motion (AUC 0.8908 -> 0.9087, log-loss 0.2057 -> 0.1921); no public label was used. The public score is a post-hoc check, not a selection input; the public-window selection prohibition is satisfied.
 
