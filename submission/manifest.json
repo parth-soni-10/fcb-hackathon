@@ -2,17 +2,17 @@
   "team": "BAU",
   "compliance": {
     "ground_truth": "public five minutes used for diagnostics, correctness checks and the final score; earlier packages selected constants and post-passes from it, all selected constants and two public-selected post-passes are removed, and two external-selected post-passes were removed too, so no final setting or post-processing pass is selected from the public window",
-    "public_selection": "satisfied: every public-selected constant and both public-selected post-passes are removed; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are fixed a priori, the long-gap tag prior is label-free, the rebound rule is removed, and the public-selected dead-model candidate is removed; the team L2=100 / dead L2=10 calibration and dead separation features were selected on held-out pseudo-labels only, never the public window; only the structural self-touch trim remains",
+    "public_selection": "satisfied: every public-selected constant and both public-selected post-passes are removed; w_tag=0.5 is pre-registered, r_iso/haz_gamma/kin_np are reverted, lam_team and touch/team geometry are fixed a priori, the long-gap tag prior is label-free, the rebound rule is removed, and the public-selected dead-model candidate is removed; the team L2=100 calibration was selected on held-out pseudo-labels only; the dead model is the 14-feature L2=3 baseline after the full-match audit, never the public window; only the structural self-touch trim remains",
     "private_ground_truth": "not present, not read",
     "video": "not decoded",
     "training_labels": "0 hand-labelled frames; 0 labellers",
     "external_data": "none: no external dataset is loaded, required or redistributed; an earlier external sample-game candidate, every setting derived from it, and two external-selected post-passes are removed"
   },
-  "generated_utc": "2026-11-09T16:22:15+00:00",
+  "generated_utc": "2026-11-13T18:49:46+00:00",
   "repository": {
     "url": "https://github.com/parth-soni-10/fcb-hackathon.git",
     "path": ".",
-    "commit": "089af4fbf0bccbc9d9fa70f1b726a51f66ea0193",
+    "commit": "19af3d1decbb38b8ff11ce3776ef433228453d50",
     "source": "git"
   },
   "competition_repo": {
@@ -57,8 +57,8 @@
     "n_frames": 199319,
     "graded_frames": 158857,
     "fps": 25,
-    "bootstrap_n": 64,
-    "stress_draws": 0,
+    "bootstrap_n": 1000,
+    "stress_draws": 10,
     "config": {
       "kappa": 0.8,
       "clip": 4.0,
@@ -69,9 +69,10 @@
       "w_shape": 0.6,
       "shape_clip": 2.0,
       "team_l2": 100.0,
-      "dead_l2": 10.0,
+      "dead_l2": 3.0,
       "w_touch": 0.5,
       "touch_dist": 1.5,
+      "w_align": 0.4,
       "touch_hold_s": 0.12,
       "touch_decay_s": 5.0,
       "lam_team": 2.5,
@@ -121,12 +122,12 @@
   "submission": {
     "path": "evaluation/results/BAU.csv",
     "drive_copy": "BAU.csv",
-    "sha256": "6d4b38f90db1bdb7391bd6c1f76a68927dbc0788eedf7ba45dc989ce1d1a01df",
+    "sha256": "b04be48e7141ca990ab1b533b3eeb17b4d8b435f743d72419eaa1d538be7e945",
     "rows": 199319,
     "label_counts": {
-      "H": 62348,
-      "A": 40199,
-      "D": 56310,
+      "H": 62562,
+      "A": 41607,
+      "D": 54688,
       "X": 40462
     }
   },
@@ -134,10 +135,10 @@
     "start": 11185,
     "stop": 18685,
     "used_for_selection": false,
-    "spellF1": 0.5625,
-    "spell_lo": 0.389375,
-    "spell_hi": 0.725,
-    "macroF1": 0.7974844763764098,
+    "spellF1": 0.575,
+    "spell_lo": 0.3875,
+    "spell_hi": 0.75,
+    "macroF1": 0.8000668660344251,
     "best_baseline": "baseline_smooth125",
     "best_baseline_spellF1": 0.4242424242424242
   },
@@ -162,10 +163,10 @@
     },
     "final_package": {
       "public_window": {
-        "spellF1": 0.5625,
-        "macroF1": 0.7974844763764098
+        "spellF1": 0.575,
+        "macroF1": 0.8000668660344251
       },
-      "submission_sha256": "6d4b38f90db1bdb7391bd6c1f76a68927dbc0788eedf7ba45dc989ce1d1a01df",
+      "submission_sha256": "b04be48e7141ca990ab1b533b3eeb17b4d8b435f743d72419eaa1d538be7e945",
       "reverted": {
         "w_tag": 0.5,
         "r_iso": 3.0,
@@ -180,13 +181,9 @@
       },
       "label_free_calibration": {
         "team_l2": 100.0,
-        "dead_l2": 10.0,
-        "dead_features": [
-          "team separation",
-          "team centroid x shift",
-          "team centroid y shift"
-        ],
-        "selection": "six contiguous held-out pseudo-label blocks; team AUC 0.8539 -> 0.8547, log-loss 0.4665 -> 0.4578; dead AUC 0.8908 -> 0.9087, log-loss 0.2057 -> 0.1921"
+        "dead_l2": 3.0,
+        "dead_features": [],
+        "selection": "team: six contiguous held-out pseudo-label blocks, AUC 0.8539 -> 0.8547, log-loss 0.4665 -> 0.4578; dead: reverted to the 14-feature L2=3 baseline after a full-match audit found only 0.5% of the calibrated model's added dead frames had positive support and 51.8% contradicted open-play tags"
       },
       "retained_public_selected": {},
       "removed_public_postprocess": [
@@ -217,9 +214,9 @@
         "name": "restart_lead_until_self_touch",
         "commit": "8491497",
         "source": "uses the decoder's last-touch state; adds no threshold; not selected on public or external labels",
-        "trimmed": 500,
+        "trimmed": 1395,
         "public_trimmed": 10,
-        "changed": 500
+        "changed": 1395
       },
       "label_free_gap_prior": {
         "gap_tag_after_s": 20.0,
@@ -233,23 +230,24 @@
         "dead_bounded_short_spell_cleanup (public-selected post-pass)",
         "sustained_other_touch_split (public-selected post-pass)",
         "dead_leading_short_spell_cleanup (external-selected post-pass)",
-        "restart_lead_until_visible (external-selected post-pass)"
+        "restart_lead_until_visible (external-selected post-pass)",
+        "dead-model L2=10 calibration (reverted after full-match audit)"
       ]
     },
     "note": "All public- and external-selected constants and post-passes are removed. The player-only model calibration is label-free and was selected on held-out pseudo-labels. The only post-pass is the structural restart self-touch trim. No external dataset is loaded. The public score is a post-hoc check; see the technical document's Selection history section."
   },
   "diagnostics": {
-    "possessions": 250,
-    "mean_s": 16.40752,
-    "median_s": 10.3,
-    "D_share": 0.35446974322818636,
-    "poss_per_min": 2.40503325359312
+    "possessions": 249,
+    "mean_s": 16.733975903614457,
+    "median_s": 11.2,
+    "D_share": 0.34425930239145897,
+    "poss_per_min": 2.395413120578747
   },
   "environment": {
     "python": "3.11.3",
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "platform": "Windows-10-10.0.26320-SP0",
-    "notebook_sha256": "ca6c665d610dbd161b4a1776c32cf28d48427ed42f263e32cae833e8697f5dda"
+    "notebook_sha256": "ba50ccb698f11530cad3a2d01314bc0a9caf2c2fff1ca73447e3d98680d648e1"
   }
 }

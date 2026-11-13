@@ -42,9 +42,9 @@ The external-data candidate also supplied the 8 m/s relative-speed touch gate, `
 
 * A later candidate added a sustained player-only dead-model split. It was evaluated on the public window, so it was not shipped; no part of that pass remains.
 
-* The only retained post-pass is `trim_restart_lead_until_self_touch` (commit `8491497`). It uses the decoder's existing last-touch state and adds no threshold; it is structural and was not selected on public or external labels. It changes 500 frame(s) on the full match, 10 in the public window.
+* The only retained post-pass is `trim_restart_lead_until_self_touch` (commit `8491497`). It uses the decoder's existing last-touch state and adds no threshold; it is structural and was not selected on public or external labels. It changes 1395 frame(s) on the full match, 10 in the public window.
 
-No public- or external-selected constant or post-processing pass remains in the final configuration. The player-only models were calibrated on six contiguous held-out pseudo-label blocks: team L2 = 100 (AUC 0.8539 -> 0.8547, log-loss 0.4665 -> 0.4578) and dead L2 = 10 with team separation/centroid motion (AUC 0.8908 -> 0.9087, log-loss 0.2057 -> 0.1921); no public label was used. The public score is a post-hoc check, not a selection input; the public-window selection prohibition is satisfied.
+No public- or external-selected constant or post-processing pass remains in the final configuration. The team-only model uses L2 = 100, selected on six contiguous held-out pseudo-label blocks (AUC 0.8539 -> 0.8547, log-loss 0.4665 -> 0.4578). The dead-ball model is the 14-feature, L2 = 3 baseline; an earlier L2 = 10 calibration with team-separation/centroid columns was reverted after a full-match audit found that only 0.5% of its added dead frames had positive support and 51.8% contradicted open-play tags. No public label was used. The public score is a post-hoc check, not a selection input; the public-window selection prohibition is satisfied.
 
 ## 1. Approach
 
@@ -60,9 +60,11 @@ The last-touch state is distance-only: a touch counts when the ball stays within
 
 The switch cost is flat at `lam_team = 2.50` nat*s, fixed a priori from the possession definition and the tracking scale. The age hazard is disabled as the simpler structural rule. The earlier public-calibrated values (1.5 and 0.25) are reverted, and the external-data candidate is removed. No public-window-selected or external-data value or pass remains; see Selection history. Section 4F reports the public score as a post-hoc check.
 
-3. **Self-supervision**, no labels involved: on frames where the ball is visible we derive confident pseudo-labels from ball kinematics and proximity, train two small L2 logistic regressions on player-only features, and apply them where the ball is missing. No model is fitted to the public ground truth. The team model uses L2 = 100 and the dead-ball model L2 = 10; the dead model also sees team separation and centroid motion. These choices were selected by held-out pseudo-label log-loss and AUC over six contiguous time blocks, never on the public window.
+3. **Self-supervision**, no labels involved: on frames where the ball is visible we derive confident pseudo-labels from ball kinematics and proximity, train two small L2 logistic regressions on player-only features, and apply them where the ball is missing. No model is fitted to the public ground truth. The team-only model uses L2 = 100, selected by held-out pseudo-label log-loss and AUC over six contiguous time blocks. The dead-ball model is the 14-feature, L2 = 3 baseline; its earlier L2 = 10 calibration was reverted after a full-match audit showed that most of its added dead frames contradicted open-play tags. Neither choice uses the public window.
 
-**Fixed settings.** `w_touch = 0.50`, `w_tag = 0.50`, `r_iso = 3.0 m`, `lam_team = 2.5`, `touch_dist = 1.5 m`, `kappa = 0.8`, `r_gate = 7.0 m` and the run-length floors are fixed from the tracking geometry and the possession definition. The no-progress cue is disabled (`kin_np = 0`). The player-only models use L2 = 100 for team and L2 = 10 for dead ball, with team separation and centroid motion in the dead model; these values were selected on held-out pseudo-labels, not the public window. The long-gap open-play guard (`gap_tag_after_s = 20.0 s`, `w_tag_alive = 1.0`) is fixed from the match-wide gap distribution and tag semantics, not the public window. No public-window-selected or external-data setting remains.
+**Fixed settings.** `w_touch = 0.50`, `w_tag = 0.50`, `r_iso = 3.0 m`, `lam_team = 2.5`, `touch_dist = 1.5 m`, `kappa = 0.8`, `r_gate = 7.0 m` and the run-length floors are fixed from the tracking geometry and the possession definition. The no-progress cue is disabled (`kin_np = 0`). The team-only model uses L2 = 100; the dead-ball model is the 14-feature, L2 = 3 baseline after the full-match audit. Neither uses the public window. The long-gap open-play guard (`gap_tag_after_s = 20.0 s`, `w_tag_alive = 1.0`) is fixed from the match-wide gap distribution and tag semantics, not the public window. No public-window-selected or external-data setting remains.
+
+**Velocity alignment.** For each team the closest visible player's velocity is compared with the ball's velocity by cosine similarity, `C = (v_p . v_b) / (|v_p| |v_b|)`, with a neutral zero for a zero-length vector. The decoder adds `w_align * (C_home - C_away)` nats, clipped to [-1, 1]. The cue is zero when the ball is missing or slower than 1 m/s. It is supporting evidence inside the same Viterbi balance, never a hard possession label, and it never switches a team by itself.
 
 Deterministic: fixed seeds, no random initialisation, so rerunning on the same bundle reproduces the same file.
 
@@ -72,9 +74,9 @@ Every asset is automatic and uncorrected, so none of it is treated as an observa
 
 * **No gap filling by interpolation.** Bridging a 20 s occlusion with a straight line would invent a possession. Where the ball is absent the team is decided by the player-only shape model and the Smart-Tagging prior instead, both of which stay defined.
 
-* **Long-gap open-play guard.** After 20 s without a visible ball, a confident open-play tag (|weighted tag evidence| >= 0.5; set pieces/goals excluded) contributes a fixed 1.0 nat alive prior. It is a soft prior: the player-only model still wins when it is strongly dead. On the full match it is active on 4462 graded frames; the open-play-tag contradiction count falls from 3546 to 2474 and 1072 labels change. 0 public frames are affected because the public window has no ball gap that long.
+* **Long-gap open-play guard.** After 20 s without a visible ball, a confident open-play tag (|weighted tag evidence| >= 0.5; set pieces/goals excluded) contributes a fixed 1.0 nat alive prior. It is a soft prior: the player-only model still wins when it is strongly dead. On the full match it is active on 4462 graded frames; the open-play-tag contradiction count falls from 3953 to 1080 and 3753 labels change. 0 public frames are affected because the public window has no ball gap that long.
 
-* **Restart self-touch trim.** After decoded dead ball, an alive run's leading frames are held dead until the team that is given possession has a controlled touch. The rule uses the decoder's last-touch state, adds no threshold, and is the only post-pass. It changes 500 frame(s) on the full match, 10 in the public window. It is structural; no public or external label selected it.
+* **Restart self-touch trim.** After decoded dead ball, an alive run's leading frames are held dead until the team that is given possession has a controlled touch. The rule uses the decoder's last-touch state, adds no threshold, and is the only post-pass. It changes 1395 frame(s) on the full match, 10 in the public window. It is structural; no public or external label selected it.
 
 * **Track slots are not players.** 46 slots for 22 people, with fragmentation and identity switches, so nothing is computed per player. Only collective features are used, and they are mean-of-visible-values, so a slot vanishing does not become a position at (0, 0).
 
@@ -106,7 +108,7 @@ Smart Tagging also supplies the **gap-only alive prior**: an open-play tag is ev
 
 * The ball is treated as dead when it is visible and no slot comes within 3.0 m of it for 1.0 s, at under 8.0 m/s. 7.1% of graded frames satisfy it.
 
-* An alive gap shorter than 5.0 s between two dead stretches is the same stoppage, not a possession. A post-hoc check on the public window, used only for reporting, moves neither dead recall nor precision (62.2% and 91.1%); the floor is a backstop for stoppages no tag covers and moves 0.1% of graded labels.
+* An alive gap shorter than 5.0 s between two dead stretches is the same stoppage, not a possession. A post-hoc check on the public window, used only for reporting, moves neither dead recall nor precision (62.7% and 91.2%); the floor is a backstop for stoppages no tag covers and moves 0.1% of graded labels.
 
 * Once the ball has been absent for 20 s, a confident open-play tag acts as a 1.0 nat alive prior; set pieces and goals are excluded. It is a prior, not a forced label, so a strongly dead player-only frame can still stay dead.
 
@@ -122,7 +124,7 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 | submission | spellF1 | macroF1 | poss | dur_s |
 |---|---|---|---|---|
-| BAU_full | 0.562 | 0.797 | 15 | 17.301 |
+| BAU_full | 0.575 | 0.800 | 15 | 17.280 |
 | baseline_smooth125 | 0.424 | 0.581 | 16 | 18.460 |
 | baseline_smooth50 | 0.326 | 0.621 | 26 | 10.803 |
 | baseline_smooth25 | 0.287 | 0.620 | 36 | 7.580 |
@@ -130,13 +132,21 @@ Public window (5 minutes, 17 possessions). It is used here only to report the fi
 
 Only the submitted file and the shipped baselines are shown. The earlier package was ranked on this window; all of its selected values and post-passes are removed, so this score is a post-hoc check, not a selection result.
 
-Full-match diagnostics of the submitted labels (no ground truth involved): 250 possessions, mean 16.4 s, median 10.3 s, dead-ball share 35.4%, 2.41 possessions per play minute.
+Full-match diagnostics of the submitted labels (no ground truth involved): 249 possessions, mean 16.7 s, median 11.2 s, dead-ball share 34.4%, 2.40 possessions per play minute.
 
-On that window the submitted labels score spellF1 **0.562** [0.389, 0.725] and macroF1 **0.797**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
+Stress test - the public window with the ball masked to the match-wide visibility, averaged over 10 draw(s). This is a robustness check, not a selection step:
+
+| variant | spellF1_mean | spellF1_sd | macroF1_mean | macroF1_sd | poss_mean |
+|---|---|---|---|---|---|
+| BAU_full | 0.447 | 0.089 | 0.780 | 0.034 | 11.000 |
+| baseline_smooth125 | 0.325 | 0.058 | 0.552 | 0.062 | 17.100 |
+| baseline_smooth50 | 0.250 | 0.039 | 0.531 | 0.061 | 24.600 |
+
+On that window the submitted labels score spellF1 **0.575** [0.388, 0.750] and macroF1 **0.800**; the best shipped baseline there is baseline_smooth125 at 0.424. The intervals overlap, and this window cannot rank anything - it is the easiest five minutes of the match. The public score is not a full-match estimate.
 
 ## 6. Limitations
 
-* **Public- and external-selected post-passes are removed.** Every earlier public-selected constant is reverted or replaced. Two public-selected post-passes (dead-bounded short-spell cleanup and sustained other-touch split) and two external-selected post-passes (dead-leading cleanup and visible-ball restart trim) are removed. The only post-pass is the structural restart self-touch trim. The 0.562 score is a post-hoc five-minute estimate, not a full-match forecast.
+* **Public- and external-selected post-passes are removed.** Every earlier public-selected constant is reverted or replaced. Two public-selected post-passes (dead-bounded short-spell cleanup and sustained other-touch split) and two external-selected post-passes (dead-leading cleanup and visible-ball restart trim) are removed. The only post-pass is the structural restart self-touch trim. The 0.575 score is a post-hoc five-minute estimate, not a full-match forecast.
 
 * Long ball-less gaps dominate the error budget. 41% of graded frames have no ball, and 67% of those missing frames sit in gaps longer than 20 s, where the player-only models and the long-gap tag guard are doing the work on weak evidence.
 
@@ -171,4 +181,4 @@ MTAH_TEAM=BAU MTAH_DATA_DIR='<bundle>' MTAH_WORK_DIR='<out>' \
 
 The match data is not redistributed with this document or the repository. No external dataset is used or redistributed.
 
-Generated by the run that wrote `BAU.csv` (sha256 `6d4b38f90db1bdb7391bd6c1f76a68927dbc0788eedf7ba45dc989ce1d1a01df`), so a stale copy of this document is detectable.
+Generated by the run that wrote `BAU.csv` (sha256 `b04be48e7141ca990ab1b533b3eeb17b4d8b435f743d72419eaa1d538be7e945`), so a stale copy of this document is detectable.
