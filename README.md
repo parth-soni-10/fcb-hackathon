@@ -76,8 +76,21 @@ Drive, and runs without one if `MTAH_DATA_DIR` and `MTAH_WORK_DIR` are set.
 python -m unittest discover -s tests -v
 ```
 
-The six tests cover zero-length vectors, missing-ball coordinates, stationary balls, invisible
-players, and the direction of the nearest-player alignment cue.
+The seven tests cover zero-length vectors, missing-ball coordinates, stationary balls, invisible
+players, and the direction of the nearest-player alignment cue, including reversal for an
+interception.
+
+### Final submission artifacts
+
+After a successful run, upload these two files from the resolved submission folder:
+
+- `BAU.csv` — the possession file; validate the exact file before upload.
+- `BAU.md` — the short technical document.
+
+`manifest.json` is supporting reproducibility evidence and is not a separate upload field. The
+competition form asks for the team name, the CSV, the public repository URL and the technical
+document; use the link emailed to registered participants. The team name on the form must match
+`BAU` (or the `MTAH_TEAM` value used for the run).
 
 | env var | default | what |
 |---|---|---|
